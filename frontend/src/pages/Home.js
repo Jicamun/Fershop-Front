@@ -1,25 +1,46 @@
-import logo from '../logo.svg';
-import '../App.css';
+import { useEffect } from 'react'
+import { useTareasContext } from '../hooks/useTareasContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+// Components
+import TareaDetails from '../components/TareaDetails'
+import TareaForm from '../components/TareaForm'
+
+const Home = () => {
+
+    const {tareas, dispatch} = useTareasContext()
+    const {user} = useAuthContext()
+
+    useEffect(() => {
+        const fetchTareas = async () => {          
+            const response = await fetch('/api/tareas/', {
+                headers: {
+                    'Authorization' : `Bearer ${user.token}`
+                }
+            })
+            const json = await response.json()
+
+            if (response.ok) {
+                dispatch({type: 'SET_TAREAS', payload: json})
+            }
+        }
+
+        if (user) {
+            fetchTareas()
+        }
+        
+    }, [dispatch, user])
+
+    return (
+        <div className="home">
+            <div className='tareas'>
+                {tareas?.map((tarea) => (
+                    <TareaDetails key={tarea._id} tarea={tarea}/>
+                ))}
+            </div>
+            <TareaForm />
+        </div>
+    )
 }
 
-export default App;
+export default Home
