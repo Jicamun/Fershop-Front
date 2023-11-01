@@ -40,7 +40,7 @@ const getWorker = async (req, res) => {
 
 // POST New Worker
 const createWorker = async (req, res) => {
-    const {name, birthdate, salary} = req.body
+    const {name, birthdate, salary, type} = req.body
 
     let emptyFields = []
     
@@ -53,6 +53,9 @@ const createWorker = async (req, res) => {
     if(!salary) {
         emptyFields.push('salary')
     }
+    if(!type) {
+        emptyFields.push('type')
+    }
     if(emptyFields.length > 0) {
         return res.status(400).json({ error: 'Please fill in all fields', emptyFields})
     }
@@ -60,7 +63,9 @@ const createWorker = async (req, res) => {
     // Add doc to DB
     try {
         const user_id = req.user._id
-        const worker = await Worker.create({name, birthdate, salary, user_id})
+        console.log({name, birthdate, salary, type, user_id})
+        const worker = await Worker.create({name, birthdate, salary, type, user_id})
+        console.log(worker)
         res.status(200).json(worker)
     } catch (error) {
         res.status(400).json({error: error.message})

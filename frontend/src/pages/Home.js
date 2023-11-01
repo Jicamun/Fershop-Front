@@ -3,7 +3,7 @@ import { useTareasContext } from '../hooks/useTareasContext'
 import { useAuthContext } from '../hooks/useAuthContext'
 
 // Components
-import TareaDetails from '../components/TareaDetails'
+import {TareaDetails} from '../components/TareaDetails'
 import TareaForm from '../components/TareaForm'
 
 const Home = () => {
@@ -32,8 +32,9 @@ const Home = () => {
     }, [dispatch, user])
 
     return (
-        <div className="home">
+        <div className="home">            
             <div className='tareas'>
+            <h1>Tareas</h1>
                 {tareas?.map((tarea) => (
                     <TareaDetails key={tarea._id} tarea={tarea}/>
                 ))}

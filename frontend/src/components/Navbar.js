@@ -17,6 +17,9 @@ const Navbar = () => {
                 <Link to="/">
                     <h1>Fercho's Shop</h1>
                 </Link>
+                <Link to="/workers">
+                    <h2>Workers</h2>
+                </Link>
                 <nav>
                     {user && (
                         <div>

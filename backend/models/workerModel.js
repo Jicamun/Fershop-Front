@@ -1,4 +1,3 @@
-const { Decimal128 } = require('mongodb')
 const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
@@ -16,9 +15,13 @@ const workerSchema = new Schema({
     },
     salary: {
         type: Number,
-        min: 0, // Minimum value (adjust as needed)
-        get: v => Math.round(v * 1000) / 100, // Round to 3 decimal places when getting the value
-        set: v => Math.round(v * 1000) / 100, // Round to 3 decimal places when setting the value
+        min: 0.00, // Minimum value (adjust as needed)
+        get: v => Math.round(v * 100) / 100, // Round to 2 decimal places when getting the value
+        set: v => Math.round(v * 100) / 100, // Round to 2 decimal places when setting the value
+        required: true
+    },
+    type: {
+        type: String,
         required: true
     },
     user_id: {

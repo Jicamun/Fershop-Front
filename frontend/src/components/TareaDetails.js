@@ -41,4 +41,17 @@ const TareaDetails = ({ tarea }) => {
     )
 }
 
-export default TareaDetails
+const TareaDetailsSmall = ({ tarea }) => {
+
+    return (
+        <div className="tarea-details">
+            <h4>{tarea.color}</h4>
+            <p> <strong>Cantidad (Litros): </strong> {tarea.cantidad} </p>
+            <p> <strong>Calidad: </strong> {tarea.calidad} </p>
+            <p> <strong>Cliente: </strong> {tarea.cliente} </p>
+            <p> <strong>Unidad: </strong> {tarea.unidad} </p>                       
+        </div>
+    )
+}
+
+export {TareaDetails, TareaDetailsSmall}

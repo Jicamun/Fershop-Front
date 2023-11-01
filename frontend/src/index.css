@@ -33,12 +33,12 @@ header a {
 }
 
 /* homepage */
-.home {
+.home, .homeWorkers{
   display: grid;
   grid-template-columns: 3fr 1fr;
   gap: 100px;
 }
-.tarea-details {
+.tarea-details, .worker-details {
   background: #fff;
   border-radius: 4px;
   margin: 20px auto;
@@ -46,17 +46,17 @@ header a {
   position: relative;
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
 }
-.tarea-details h4 {
+.tarea-details h4, .worker-details h4 {
   margin: 0 0 10px 0;
   font-size: 1.2em;
   color: var(--primary);
 }
-.tarea-details p {
+.tarea-details p, .worker-details p {
   margin: 0;
   font-size: 0.9em;
   color: #555;
 }
-.tarea-details span {
+.tarea-details span, .worker-details span {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -67,7 +67,7 @@ header a {
   color: #333;
 }
 
-/* new tarea form */
+/* new element form */
 label, input {
   display: block;
 }

@@ -6,6 +6,8 @@ import Home from './pages/Home'
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Worker from './pages/Worker'
+import Task from './pages/Tasks'
 
 function App() {
 
@@ -28,6 +30,15 @@ function App() {
             <Route 
               path="/signup"
               element={!user ? <Signup/> : <Navigate to="/"/>}
+            />
+            
+            <Route 
+              path="/workers"
+              element={user ? <Worker/> : <Navigate to="/"/>}              
+            />
+            <Route 
+              path="/task"
+              element={user ? <Task/> : <Navigate to="/task"/>}              
             />
           </Routes>
         </div>      
