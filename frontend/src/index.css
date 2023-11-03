@@ -15,7 +15,7 @@ header {
   background: #fff;
 }
 header .container {
-  max-width: 1400px;
+  max-width: 75%;
   margin: 0 auto;
   padding: 10px 20px;
   display: flex;
@@ -27,7 +27,7 @@ header a {
   text-decoration: none;
 }
 .pages{
-  max-width: 1400px;
+  max-width: 75%;
   padding: 20px;
   margin: 0 auto;
 }
@@ -128,4 +128,81 @@ form.signup, form.login {
   padding: 20px;
   background: #fff;
   border-radius: 4px;
+}
+
+/* Igualador Interface */
+
+
+
+
+.tarea-details-small, .worker-details-small {
+  background: #fff;
+  border-radius: 4px;
+  margin: 15px auto;
+  padding: 20px;
+  position: relative;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+}
+.worker-details-small h4 {
+  margin: 0 0 0 0;
+  font-size: 1.2em;
+  color: black;
+  font-weight: bold;
+}
+.tarea-details-small p {
+  margin: 0;
+  font-size: 0.9em;
+
+}
+
+.igualadorInterface {
+  display: flex; /* Utiliza Flexbox para crear las columnas */
+}
+
+.igualadorInterface > .workers, .igualadorInterface > .tareas, .igualadorInterface > .buttons {
+  flex: 1; /* Hace que todas las columnas se expandan igualmente */
+  padding: 5px; /* Espacio entre las columnas */
+  border: 5px solid #cccccc2f; /* Borde para separar las columnas */
+  text-align: center; /* Centra el contenido horizontalmente */
+  user-select: none;
+  overflow-y: auto; 
+  overflow-x: hidden;
+  height: 800px;
+}
+
+.igualadorInterface > .buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buttons > .button-row {
+  display: flex;
+  justify-content: center;
+  cursor: pointer; /* Cambia el cursor a una mano cuando pasas el ratón sobre los botones */
+  padding: 20px;
+  position: relative;
+  transition: background-color 0.3s ease;
+  
+}
+
+.btn-square-md {
+  width: 100px !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  height: 100px !important;
+  text-align: center;
+  padding: 0px;
+  font-size:12px;
+}
+
+.selected{
+  background-color: #198653;
+}
+
+.disabled-div {
+  pointer-events: none;
+  /* Additional styles to indicate that the div is disabled (optional) */
+  opacity: 0.5; /* Reduces opacity to visually indicate the disabled state */
+  cursor: not-allowed; /* Changes cursor to "not-allowed" to show it's not clickable */
 }

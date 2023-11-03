@@ -15,11 +15,21 @@ const Navbar = () => {
         <header>
             <div className="container">
                 <Link to="/">
-                    <h1>Fercho's Shop</h1>
+                    <h1>Fershop Rallys</h1>
                 </Link>
-                <Link to="/workers">
-                    <h2>Workers</h2>
-                </Link>
+                <nav>
+                    {user && (
+                        <div>
+                            <Link to="/workers">
+                            Workers
+                            </Link>
+                            <Link to="/task">
+                                Taks
+                            </Link>
+                        </div>
+                    )}
+                </nav>
+                
                 <nav>
                     {user && (
                         <div>

@@ -45,10 +45,14 @@ const WorkerDetails = ({ worker }) => {
     )
 }
 
-const WorkerDetailsSmall = ({ worker }) => {
+const WorkerDetailsSmall = ({ worker, onClick, selected }) => {
+    const handleClick = () => {
+        // Llama a la función de clic pasando el trabajador
+        onClick(worker);
+    };
 
     return (
-        <div className="worker-details">
+        <div className={`worker-details-small ${selected ? 'selected' : ''}`} onClick={handleClick}>
             <h4>{worker.name}</h4>
             {/*<p> {formatDistanceToNow(new Date(worker.createdAt), {addSuffix: true})} </p>*/}
             {/*<span className="material-symbols-outlined" onClick={handleClick}>delete_forever</span>*/}

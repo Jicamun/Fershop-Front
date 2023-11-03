@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useWorkersContext } from "../hooks/useWorkersContext"
 import { useAuthContext } from "../hooks/useAuthContext"
 
@@ -12,6 +12,8 @@ const WorkerForm = () => {
     const [type, setType] = useState('')
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
+
+    const inputRef = useRef(null);
     
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -47,6 +49,7 @@ const WorkerForm = () => {
             setError(null)
             setEmptyFields([])
             console.log('New Worker Added', json)
+            inputRef.current.focus()
             dispatch({type: 'CREATE_WORKER', payload: json})
         }
     }
@@ -62,6 +65,7 @@ const WorkerForm = () => {
                 onChange={(e) => setName(e.target.value)}
                 value={name}
                 className={emptyFields.includes('name') ? 'error' : ''}
+                ref={inputRef}
             />
             <label>Fecha de Nacimiento:</label>
             <input 

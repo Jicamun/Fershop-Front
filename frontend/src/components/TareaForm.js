@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useTareasContext } from "../hooks/useTareasContext"
 import { useAuthContext } from "../hooks/useAuthContext"
 
@@ -13,6 +13,8 @@ const TareaForm = () => {
     const [unidad, setUnidad] = useState('')
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
+
+    const inputRef = useRef(null);
     
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -49,8 +51,9 @@ const TareaForm = () => {
             setError(null)
             setEmptyFields([])
             console.log('New Tarea Added', json)
+            inputRef.current.focus()
             dispatch({type: 'CREATE_TAREA', payload: json})
-        }
+        }        
     }
 
     return (
@@ -64,6 +67,7 @@ const TareaForm = () => {
                 onChange={(e) => setCantidad(e.target.value)}
                 value={cantidad}
                 className={emptyFields.includes('cantidad') ? 'error' : ''}
+                ref={inputRef}
             />
             <label>Calidad:</label>
             <input 
