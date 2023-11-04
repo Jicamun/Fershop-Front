@@ -5,6 +5,8 @@ const {
     createTarea,
     getTarea,
     getTareas,
+    getTareasByWorker,
+    getFreeTareas,
     deleteTarea,
     updateTarea 
 } = require('../controllers/tareaController')
@@ -17,6 +19,12 @@ router.use(requireAuth)
 
 // GET all tareas
 router.get('/', getTareas);
+
+// GET all tareas by Worker
+router.get('/worker/:id', getTareasByWorker);
+
+// GET Free tareas 
+router.get('/free', getFreeTareas);
 
 // GET single tarea
 router.get('/:id', getTarea);

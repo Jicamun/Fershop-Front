@@ -15,51 +15,90 @@ const Task = () => {
     const [selectedWorker, setSelectedWorker] = useState(null);
     const [selectedTarea, setSelectedTarea] = useState(null);
 
+    const fetchWorkers = async () => {          
+        const response = await fetch('/api/workers/', {
+            headers: {
+                'Authorization' : `Bearer ${user.token}`
+            }
+        })
+        const json = await response.json()
+
+        if (response.ok) {
+            workersDispatch({type: 'SET_WORKERS', payload: json})
+        }
+    }
+
+    const fetchFreeTareas = async () => {
+        const response = await fetch('/api/tareas/free', {
+            headers: {
+                'Authorization' : `Bearer ${user.token}`
+            }
+        })
+        const json = await response.json()
+
+        if(response.ok){
+            tareasDispatch({type:'SET_TAREAS', payload: json})
+        }
+    }
+
+    const fetchTareasByWorker = async (worker) => {
+        const response = await fetch('/api/tareas/worker/' + worker._id, {
+            headers: {
+                'Authorization' : `Bearer ${user.token}`
+            }
+        })
+        const json = await response.json()
+
+        if(json.length < 1){
+            fetchFreeTareas()
+            return
+        }
+
+        if(response.ok){
+            tareasDispatch({type:'SET_TAREAS_SMALL', payload: json})
+        }
+    }
+
+    const startTarea = async (tarea, worker) => {
+        debugger
+        tarea.status = 1;
+        tarea.worker_id = worker._id;
+
+        const response = await fetch('/api/tareas/' + tarea._id, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization' : `Bearer ${user.token}`
+            },
+            body: JSON.stringify(tarea)
+        })
+
+        if(response.ok){
+            setSelectedWorker(null)
+            setSelectedTarea(null) 
+        }
+    }
+
     useEffect(() => {
         setSelectedWorker(null)
-        setSelectedTarea(null)
-        const fetchWorkers = async () => {          
-            const response = await fetch('/api/workers/', {
-                headers: {
-                    'Authorization' : `Bearer ${user.token}`
-                }
-            })
-            const json = await response.json()
-
-            if (response.ok) {
-                workersDispatch({type: 'SET_WORKERS', payload: json})
-            }
-        }
-
-        const fetchTareas = async () => {
-            const response = await fetch('/api/tareas/', {
-                headers: {
-                    'Authorization' : `Bearer ${user.token}`
-                }
-            })
-            const json = await response.json()
-
-            if(response.ok){
-                tareasDispatch({type:'SET_TAREAS', payload: json})
-            }
-        }
+        setSelectedTarea(null)       
 
         if (user) {
             fetchWorkers()
-            fetchTareas()
         }
         
     }, [dispatch, tareasDispatch, workersDispatch, user])
 
 
 
-    const handleWorkerClick = (worker) => {
-        if (selectedWorker === worker) {
-            setSelectedWorker(null); // Deseleccionar el trabajador si ya estaba seleccionado
-            setSelectedTarea(null)
-        } else {
+    const handleWorkerClick = (worker) => {         
+        setSelectedTarea(null)
+        if (selectedWorker === worker) {            
+            setSelectedWorker(null); // Deseleccionar el trabajador si ya estaba seleccionado            
+        } else {            
             setSelectedWorker(worker);
-        }
+            fetchTareasByWorker(worker)   
+        } 
     };
 
     const handleTareaClick = (tarea) => {
@@ -67,12 +106,14 @@ const Task = () => {
             setSelectedTarea(null); // Deseleccionar la tarea si ya estaba seleccionada
         } else {
             setSelectedTarea(tarea);
+            console.log(tarea)
         }
     };
 
     const handleActionClick = () => {
         try{
-            console.log("Algo " + selectedWorker._id + " " + selectedTarea._id)
+            console.log("Algo " + selectedWorker.name + " " + selectedTarea.color)
+            startTarea(selectedTarea, selectedWorker)
         }
         catch (error)
         {
@@ -107,7 +148,7 @@ const Task = () => {
                             key={tarea._id} 
                             tarea={tarea}
                             onClick={handleTareaClick}
-                            selected={selectedTarea === tarea}
+                            selected={selectedTarea === tarea}                            
                         />
                     ))}
                 </div>
@@ -122,6 +163,7 @@ const Task = () => {
                     <button 
                         type="button" 
                         className="btn btn-square-md btn-success"
+                        onClick={handleActionClick}
                     >
                         Iniciar
                     </button>

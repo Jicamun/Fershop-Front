@@ -197,7 +197,7 @@ form.signup, form.login {
 }
 
 .selected{
-  background-color: #198653;
+  background-color: #198653 !important; 
 }
 
 .disabled-div {
@@ -205,4 +205,20 @@ form.signup, form.login {
   /* Additional styles to indicate that the div is disabled (optional) */
   opacity: 0.5; /* Reduces opacity to visually indicate the disabled state */
   cursor: not-allowed; /* Changes cursor to "not-allowed" to show it's not clickable */
+}
+
+.status-new{
+  /*background-color: navy;*/
+}
+
+.status-in-progress{
+  background-color: lightyellow;
+}
+
+.status-paused{
+  background-color: tomato;  
+}
+
+.status-finished{
+  background-color: green
 }

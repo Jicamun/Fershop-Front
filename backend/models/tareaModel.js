@@ -27,6 +27,14 @@ const tareaSchema = new Schema({
         type: String,
         required: true
     },
+    status: {
+        type: Number,
+        required: true
+    },
+    worker_id: {
+        type: String,
+        required: true
+    },
     user_id: {
         type: String,
         required: true

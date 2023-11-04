@@ -4,7 +4,24 @@ const mongoose = require('mongoose')
 // GET All Tareas
 const getTareas = async (req, res) => {
     const user_id = req.user._id
-    const tareas = await Tarea.find({ user_id }).sort({ createdAt: 1 })
+    const tareas = await Tarea.find({ user_id }).sort({ createdAt: -1 })
+
+    res.status(200).json(tareas)
+}
+
+// GET All Tareas by Worker
+const getTareasByWorker = async (req, res) => {
+    const user_id = req.user._id
+    const {id} = req.params
+    const tareas = await Tarea.find({ user_id, worker_id:id }).sort({ createdAt: -1 })
+
+    res.status(200).json(tareas)
+}
+
+// GET All Free Tareas
+const getFreeTareas = async (req, res) => {
+    const user_id = req.user._id
+    const tareas = await Tarea.find({ user_id, status:0 }).sort({ createdAt: -1 })
 
     res.status(200).json(tareas)
 }
@@ -57,7 +74,9 @@ const createTarea = async (req, res) => {
     // Add doc to DB
     try {
         const user_id = req.user._id
-        const tarea = await Tarea.create({cantidad, calidad, color, cliente, unidad, user_id})
+        const status = 0
+        const worker_id = 0
+        const tarea = await Tarea.create({cantidad, calidad, color, cliente, unidad, status, worker_id, user_id})
         res.status(200).json(tarea)
     } catch (error) {
         res.status(400).json({error: error.message})
@@ -109,6 +128,8 @@ module.exports = {
     createTarea,
     getTarea,
     getTareas,
+    getTareasByWorker,
+    getFreeTareas,
     deleteTarea,
     updateTarea
 }

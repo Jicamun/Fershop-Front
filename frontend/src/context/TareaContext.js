@@ -10,6 +10,8 @@ export const tareasReducer = (state, action) => {
             return {tareas: [action.payload, ...state.tareas]}
         case 'DELETE_TAREA':
             return {tareas: state.tareas.filter((w) => w._id !== action.payload._id)}
+        case 'SET_TAREAS_SMALL':
+            return {tareas: action.payload}
         default:
             return state
     }
