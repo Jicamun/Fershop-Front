@@ -4,18 +4,33 @@ const mongoose = require('mongoose')
 // GET All Tareas
 const getTareas = async (req, res) => {
     const user_id = req.user._id
-    const tareas = await Tarea.find({ user_id }).sort({ createdAt: -1 })
+    const tareas = await Tarea.find({ user_id }).sort({ status: 1 })
 
     res.status(200).json(tareas)
 }
 
 // GET All Tareas by Worker
-const getTareasByWorker = async (req, res) => {
+const getStartedTareasByWorker = async (req, res) => {
     const user_id = req.user._id
     const {id} = req.params
-    const tareas = await Tarea.find({ user_id, worker_id:id }).sort({ createdAt: -1 })
+    const tareas = await Tarea.find({ user_id, worker_id:id, status: { $in: [1,2] } }).sort({ createdAt: -1 })
 
     res.status(200).json(tareas)
+}
+
+const getNewTareas = async (req, res) => {
+    const user_id = req.user._id
+    const tareas = await Tarea.find({ user_id, status:0 }).sort({ createdAt: -1 })
+
+    res.status(200).json(tareas)
+}
+
+const getFinishedTareas = async (req, res) => {
+    const user_id = req.user._id
+    const tareas = await Tarea.find({ user_id, status:3 }).sort({ createdAt: -1 })
+
+    res.status(200).json(tareas)
+
 }
 
 // GET All Free Tareas
@@ -83,6 +98,63 @@ const createTarea = async (req, res) => {
     }
 }
 
+// POST Bulk Tarea
+const createBulkTarea = async (req, res) => {
+    const tareas = req.body;
+  
+    if (!Array.isArray(tareas) || tareas.length === 0) {
+      return res.status(400).json({ error: 'Request body must be an array of tasks' });
+    }
+  
+    const emptyFields = [];
+  
+    for (const tarea of tareas) {
+      if (!tarea.cantidad) {
+        emptyFields.push('cantidad');
+      }
+      if (!tarea.calidad) {
+        emptyFields.push('calidad');
+      }
+      if (!tarea.color) {
+        emptyFields.push('color');
+      }
+      if (!tarea.cliente) {
+        emptyFields.push('cliente');
+      }
+      if (!tarea.unidad) {
+        emptyFields.push('unidad');
+      }
+    }
+  
+    if (emptyFields.length > 0) {
+      return res.status(400).json({ error: 'Please fill in all fields', emptyFields });
+    }
+  
+    try {
+      const user_id = req.user._id;
+      const status = 0;
+      const worker_id = 0;
+  
+      const tasksToCreate = tareas.map((tarea) => ({
+        cantidad: tarea.cantidad,
+        calidad: tarea.calidad,
+        color: tarea.color,
+        cliente: tarea.cliente,
+        unidad: tarea.unidad,
+        status,
+        worker_id,
+        user_id,
+      }));
+  
+      await Tarea.collection.drop()
+      const createdTasks = await Tarea.insertMany(tasksToCreate);
+  
+      res.status(200).json(createdTasks);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+
 // DELETE Single Tarea
 const deleteTarea = async (req, res) => {
     const {id} = req.params
@@ -126,9 +198,12 @@ const updateTarea = async (req, res) => {
 
 module.exports = {
     createTarea,
+    createBulkTarea,
     getTarea,
     getTareas,
-    getTareasByWorker,
+    getNewTareas,
+    getStartedTareasByWorker,
+    getFinishedTareas,
     getFreeTareas,
     deleteTarea,
     updateTarea

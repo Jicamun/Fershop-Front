@@ -35,6 +35,22 @@ const tareaSchema = new Schema({
         type: String,
         required: true
     },
+    timeStart: {
+        type: Date,
+        required: false
+    },
+    timePaused: [{
+        type: Date,
+        required: false
+    }],
+    timeResumed: [{
+        type: Date,
+        required: false
+    }],
+    timeFinish: {
+        type: Date,
+        required: false
+    },
     user_id: {
         type: String,
         required: true

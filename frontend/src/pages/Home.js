@@ -13,7 +13,7 @@ const Home = () => {
 
     useEffect(() => {
         const fetchTareas = async () => {          
-            const response = await fetch('/api/tareas/', {
+            const response = await fetch('/api/tareas/all', {
                 headers: {
                     'Authorization' : `Bearer ${user.token}`
                 }

@@ -15,18 +15,23 @@ const TareaDetails = ({ tarea }) => {
             return
         }
         
-        const response = await fetch('/api/tareas/' + tarea._id, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': `Bearer ${user.token}`
+        const confirmDelete = window.confirm("¿Seguro que quieres borrar esta tarea?");
+
+        if (confirmDelete) {
+            const response = await fetch('/api/tareas/' + tarea._id, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
+            })
+            const json = await response.json()
+    
+            if (response.ok){
+                dispatch({type: 'DELETE_TAREA', payload: json})
             }
-        })
-        const json = await response.json()
-
-        if (response.ok){
-            dispatch({type: 'DELETE_TAREA', payload: json})
-        }
-
+        } else {
+            return
+        } 
     }
 
     return (
@@ -36,6 +41,26 @@ const TareaDetails = ({ tarea }) => {
             <p> <strong>Calidad: </strong> {tarea.calidad} </p>
             <p> <strong>Cliente: </strong> {tarea.cliente} </p>
             <p> <strong>Unidad: </strong> {tarea.unidad} </p>
+            <p> <strong>Status: </strong>   
+                {(() => {
+                    let statusText
+                    switch(tarea.status) {
+                        case 0:
+                            statusText = "Nuevo"
+                            break;
+                        case 1:
+                            statusText = "En Proceso"
+                            break;
+                        case 2:
+                            statusText = "En pausa"
+                            break;
+                        default:
+                            statusText = "Terminado"
+                            break;
+                    }
+                    return statusText;                    
+                })()}
+            </p>
             <p> {formatDistanceToNow(new Date(tarea.createdAt), {addSuffix: true})} </p>
             <span className="material-symbols-outlined" onClick={handleClick}>delete_forever</span>
         </div>
@@ -49,6 +74,7 @@ TareaDetails.propTypes = {
         calidad: PropTypes.string.isRequired,
         cliente: PropTypes.string.isRequired,
         unidad: PropTypes.string.isRequired,
+        status: PropTypes.number.isRequired,
         createdAt: PropTypes.string.isRequired,
     }).isRequired,
 };

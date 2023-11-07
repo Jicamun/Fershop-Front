@@ -42,7 +42,7 @@ const Task = () => {
     }
 
     const fetchTareasByWorker = async (worker) => {
-        const response = await fetch('/api/tareas/worker/' + worker._id, {
+        const response = await fetch('/api/tareas/started/' + worker._id, {
             headers: {
                 'Authorization' : `Bearer ${user.token}`
             }
@@ -50,7 +50,7 @@ const Task = () => {
         const json = await response.json()
 
         if(json.length < 1){
-            fetchFreeTareas()
+            fetchFreeTareas([])
             return
         }
 
@@ -60,7 +60,19 @@ const Task = () => {
     }
 
     const startTarea = async (tarea, worker) => {
-        debugger
+        if(!tarea || !worker){
+            alert("Seleccione un trabajador y una tarea primero.")
+            return
+        }
+        if(!tarea.status === 2){
+            tarea.timeStart = Date.now()
+            
+            
+        } else {
+            
+            tarea.timeResumed.push(Date.now()) 
+        }
+
         tarea.status = 1;
         tarea.worker_id = worker._id;
 
@@ -74,7 +86,72 @@ const Task = () => {
         })
 
         if(response.ok){
-            setSelectedWorker(null)
+            setSelectedTarea(null) 
+        }
+    }
+    
+    const pauseTarea = async (tarea, worker) => {
+        if(!tarea || !worker){
+            return
+        }
+        tarea.status = 2;
+        tarea.timePaused.push(Date.now()) 
+        
+        const response = await fetch('/api/tareas/' + tarea._id, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization' : `Bearer ${user.token}`
+            },
+            body: JSON.stringify(tarea)
+        })
+        
+        if(response.ok){
+            setSelectedTarea(null) 
+        }
+    }
+
+    const finishTarea = async (tarea, worker) => {
+        if(!tarea || !worker){
+            return
+        }
+        tarea.status = 3;
+        tarea.timeFinish = Date.now()
+
+        const response = await fetch('/api/tareas/' + tarea._id, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization' : `Bearer ${user.token}`
+            },
+            body: JSON.stringify(tarea)
+        })
+
+        if(response.ok){
+            setSelectedTarea(null)
+            setSelectedWorker(null) 
+        }
+    }
+
+    const cancelTarea = async (tarea, worker) => {
+        if(!tarea || !worker){
+            return
+        }
+        tarea.status = 0;
+        tarea.timeStart = null
+        tarea.timePaused = null
+        tarea.timeFinished = null
+
+        const response = await fetch('/api/tareas/' + tarea._id, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization' : `Bearer ${user.token}`
+            },
+            body: JSON.stringify(tarea)
+        })
+
+        if(response.ok){
             setSelectedTarea(null) 
         }
     }
@@ -84,15 +161,18 @@ const Task = () => {
         setSelectedTarea(null)       
 
         if (user) {
-            fetchWorkers()
+            if(!workers){
+                fetchWorkers()
+            }            
         }
         
     }, [dispatch, tareasDispatch, workersDispatch, user])
 
 
-
     const handleWorkerClick = (worker) => {         
-        setSelectedTarea(null)
+        tareasDispatch({type:'SET_TAREAS_SMALL', payload: []})
+        setSelectedTarea(null)        
+        
         if (selectedWorker === worker) {            
             setSelectedWorker(null); // Deseleccionar el trabajador si ya estaba seleccionado            
         } else {            
@@ -110,9 +190,8 @@ const Task = () => {
         }
     };
 
-    const handleActionClick = () => {
-        try{
-            console.log("Algo " + selectedWorker.name + " " + selectedTarea.color)
+    const handleActionStartClick = () => {
+        try{        
             startTarea(selectedTarea, selectedWorker)
         }
         catch (error)
@@ -121,6 +200,42 @@ const Task = () => {
         }
         
     }
+    
+    const handleActionFinishClick = () => {
+        try{        
+            finishTarea(selectedTarea, selectedWorker)
+        }
+        catch (error)
+        {
+            alert("An error has ocurred")
+        }
+        
+    }
+    
+    const handleActionPauseClick = () => {
+        try{  
+            
+            pauseTarea(selectedTarea, selectedWorker)
+        }
+        catch (error)
+        {
+            alert("An error has ocurred")
+        }
+        
+    }
+    const handleActionCancelClick = () => {
+        try{  
+            
+            cancelTarea(selectedTarea, selectedWorker)
+        }
+        catch (error)
+        {
+            alert("An error has ocurred")
+        }
+        
+    }
+
+    
 
     return (
         <div className="igualadorInterface">
@@ -138,11 +253,14 @@ const Task = () => {
             </div>
                       
             <div 
-                className={`tareas ${selectedWorker ? '' : 'disabled-div'}`}
-                disabled={!selectedWorker}
+                className="tareas"
             >
                 <h1>Lista de Colores</h1>
-                <div className='row tareas-row'>
+                <div 
+                    className={`row tareas-row ${selectedWorker ? '' : 'disabled-div'}`
+                     }
+                    disabled={!selectedWorker}
+                >
                     {tareas?.map((tarea) => (
                         <TareaDetailsSmall 
                             key={tarea._id} 
@@ -155,29 +273,48 @@ const Task = () => {
             </div>
 
             <div 
-                className={`buttons ${selectedTarea ? '' : 'disabled-div'}`}
+                className='buttons'
                 disabled={!selectedTarea}
             >
                 <h1>Acción</h1>
-                <div className='button-row button-start'>
-                    <button 
-                        type="button" 
-                        className="btn btn-square-md btn-success"
-                        onClick={handleActionClick}
-                    >
-                        Iniciar
-                    </button>
-                    {/*<span className="material-symbols-outlined play" >play</span>*/}
-                </div>
-                <div className='button-row button-pause'> 
-                    <button 
-                        type="button" 
-                        className="btn btn-square-md btn-danger"
-                        onClick={handleActionClick}
-                    >
-                        Finalizar
-                    </button>                  
-                    {/*<span className="material-symbols-outlined pause" >stop</span>*/}
+                <div className={`buttons ${selectedTarea ? '' : 'disabled-div'}`}>
+                    <div className={`button-row button-start ${selectedTarea && (selectedTarea.status === 0 || selectedTarea.status === 2) ? '' : 'disabled-div'}`}>
+                        <button 
+                            type="button" 
+                            className="btn btn-square-md btn-success"
+                            onClick={handleActionStartClick}
+                        >
+                            Iniciar
+                        </button>                        
+                    </div>
+                    <div className={`button-row button-pause ${selectedTarea && (selectedTarea.status === 1) ? '' : 'disabled-div'} `}> 
+                        <button 
+                            type="button" 
+                            className="btn btn-square-md btn-warning"
+                            onClick={handleActionPauseClick}
+                        >
+                            Pausar
+                        </button>                  
+                    </div>
+                    <div className={`button-row button-pause ${selectedTarea && (selectedTarea.status === 1) ? '' : 'disabled-div'}`}> 
+                        <button 
+                            type="button" 
+                            className="btn btn-square-md btn-success"
+                            onClick={handleActionFinishClick}
+                        >
+                            Finalizar
+                        </button>                  
+                    </div>
+
+                    <div className={`button-row button-pause ${selectedTarea && (selectedTarea.status !== 0) ? '' : 'disabled-div'}`}> 
+                        <button 
+                            type="button" 
+                            className="btn btn-square-md btn-danger"
+                            onClick={handleActionCancelClick}
+                        >
+                            Cancelar
+                        </button>                                          
+                    </div>
                 </div>
             </div>
         </div>

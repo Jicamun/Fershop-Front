@@ -3,9 +3,12 @@ const express = require('express')
 // Controller Functions
 const { 
     createTarea,
+    createBulkTarea,
     getTarea,
     getTareas,
-    getTareasByWorker,
+    getNewTareas,
+    getStartedTareasByWorker,
+    getFinishedTareas,
     getFreeTareas,
     deleteTarea,
     updateTarea 
@@ -18,10 +21,16 @@ const router = express.Router()
 router.use(requireAuth)
 
 // GET all tareas
-router.get('/', getTareas);
+router.get('/all', getTareas);
 
-// GET all tareas by Worker
-router.get('/worker/:id', getTareasByWorker);
+// GET all non worked tareas
+router.get('/new', getNewTareas);
+
+// GET all started tareas by Worker
+router.get('/started/:id', getStartedTareasByWorker);
+
+// GET all finished tareas
+router.get('/finished', getFinishedTareas);
 
 // GET Free tareas 
 router.get('/free', getFreeTareas);
@@ -31,6 +40,9 @@ router.get('/:id', getTarea);
 
 // POST a new tarea
 router.post('/', createTarea);
+
+// POST Bulk tarea
+router.post('/bulk', createBulkTarea);
 
 // DELETE tarea
 router.delete('/:id', deleteTarea);
