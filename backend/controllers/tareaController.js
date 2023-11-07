@@ -176,7 +176,7 @@ const deleteTarea = async (req, res) => {
 
 // PATCH Single Tarea
 const updateTarea = async (req, res) => {
-    const {id, values} = req.params
+    const {id} = req.params
     const user_id = req.user._id
     
 

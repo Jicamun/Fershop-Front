@@ -1,4 +1,5 @@
 import { createContext, useReducer } from "react"
+import PropTypes from 'prop-types'
 
 export const TareasContext = createContext()
 
@@ -28,4 +29,8 @@ export const TareasContextProvider = ({ children }) => {
             { children }            
         </TareasContext.Provider>
     )
+}
+
+TareasContextProvider.propTypes = {
+    children: PropTypes.string.isRequired
 }

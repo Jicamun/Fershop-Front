@@ -132,9 +132,6 @@ form.signup, form.login {
 
 /* Igualador Interface */
 
-
-
-
 .tarea-details-small, .worker-details-small {
   background: #fff;
   border-radius: 4px;
@@ -179,7 +176,7 @@ form.signup, form.login {
 .buttons > .button-row {
   display: flex;
   justify-content: center;
-  cursor: pointer; /* Cambia el cursor a una mano cuando pasas el ratón sobre los botones */
+  cursor: pointer; 
   padding: 20px;
   position: relative;
   transition: background-color 0.3s ease;
@@ -202,7 +199,6 @@ form.signup, form.login {
 
 .disabled-div {
   pointer-events: none;
-  /* Additional styles to indicate that the div is disabled (optional) */
   opacity: 0.5; /* Reduces opacity to visually indicate the disabled state */
   cursor: not-allowed; /* Changes cursor to "not-allowed" to show it's not clickable */
   display: none !important; 

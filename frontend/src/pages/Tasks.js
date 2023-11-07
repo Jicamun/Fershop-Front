@@ -50,7 +50,7 @@ const Task = () => {
         const json = await response.json()
 
         if(json.length < 1){
-            fetchFreeTareas([])
+            fetchFreeTareas()
             return
         }
 
@@ -64,7 +64,7 @@ const Task = () => {
             alert("Seleccione un trabajador y una tarea primero.")
             return
         }
-        if(!tarea.status === 2){
+        if(!(tarea.status === 2)){
             tarea.timeStart = Date.now()
             
             

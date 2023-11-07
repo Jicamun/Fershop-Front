@@ -94,20 +94,13 @@ const TareaDetailsSmall = ({ tarea, onClick, selected }) => {
     };
 
     return (
-        /*<div className={`tarea-details-small ${selected ? 'selected' : ''}`} onClick={handleClick}>
-            <h4>{tarea.color}<  /h4>
-            <p> <strong>Cantidad (Litros): </strong> {tarea.cantidad} </p>
-            <p> <strong>Calidad: </strong> {tarea.calidad} </p>
-            <p> <strong>Cliente: </strong> {tarea.cliente} </p>
-            <p> <strong>Unidad: </strong> {tarea.unidad} </p>                       
-        </div>*/
         <div className="col-sm-6">
             <div 
                 className=
                     {`card tarea-details-small ${selected ? 'selected' : ''} ${tarea.status === 0 ? 'status-new' : tarea.status === 1 ? 'status-in-progress' : tarea.status === 2 ? 'status-paused' : 'status-finished'}`}
-                onClick={handleClick}
-                onKeyDown={handleKeyPress} // Agrega el controlador de teclado                
-                tabIndex={0} // Permite que el elemento obtenga foco
+                onClick={handleClick} 
+                onKeyDown={handleKeyPress} 
+                tabIndex={0} 
             >
                 <div className="card-body">
                     <h5 className="card-title">{tarea.color}</h5>            
@@ -124,6 +117,7 @@ TareaDetailsSmall.propTypes = {
         calidad: PropTypes.string.isRequired,
         cliente: PropTypes.string.isRequired,
         unidad: PropTypes.string.isRequired,
+        status: PropTypes.number.isRequired,
     }).isRequired,
     onClick: PropTypes.func.isRequired,
     selected: PropTypes.bool.isRequired,
