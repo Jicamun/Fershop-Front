@@ -5,7 +5,6 @@ const mongoose = require('mongoose')
 const userRoutes = require('./routes/user')
 const tareaRoutes = require('./routes/tarea')
 const workerRoutes = require('./routes/worker')
-const cors = require('cors');
 
 // MongoURI
 const uri = process.env.MONGO_URI
@@ -16,7 +15,6 @@ const app = express()
 
 
 // Middleware
-app.use(cors())
 
 app.use(express.json())
 
