@@ -215,3 +215,32 @@ form.signup, form.login {
 .status-finished{
   background-color: green
 }
+
+/* Filtros  */
+@media (min-width: 769px){
+  .filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100;
+  }
+
+  /* Opcional: Alineación horizontal y centrado de elementos */
+  .filter-container > * {
+    align-self: center;
+    width: 100%;
+  }
+
+  /* Ajustes específicos para el botón */
+  .filter-container button {
+    width: auto;
+  }
+}

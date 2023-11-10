@@ -3,10 +3,49 @@ const mongoose = require('mongoose')
 
 // GET All Tareas
 const getTareas = async (req, res) => {
-    const user_id = req.user._id
-    const tareas = await Tarea.find({ user_id }).sort({ status: 1 })
+    try {
+        const user_id = req.user._id
 
-    res.status(200).json(tareas)
+        let { selectedWorker, selectedStatus, selectedDateRange, searchColor, clientText, unitText } = req.query;
+
+        if(selectedStatus === '0'){
+            selectedWorker = ''
+        }
+        
+        const parametros = {
+            user_id,
+            worker_id:selectedWorker,
+            status:selectedStatus,        
+            selectedDateRange,
+            color:searchColor,
+            cliente:clientText,
+            unidad:unitText
+        };
+
+        const filtro = Object.fromEntries(
+            Object.entries(parametros).filter(([key, value]) => value !== undefined && value !== null && value !== '')
+        );
+
+        filtro.user_id = user_id;
+
+        if (selectedDateRange && selectedDateRange.length === 2) {
+            filtro.timeStart = {
+                $gte: new Date(selectedDateRange[0]),
+                $lte: new Date(selectedDateRange[1]),
+            };
+        }
+
+       
+
+        
+
+        console.log(filtro)
+
+        const tareas = await Tarea.find( filtro ).sort({ status: 1 })
+        res.status(200).json(tareas)
+    } catch {
+        
+    }
 }
 
 // GET All Tareas by Worker

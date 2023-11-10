@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Worker from './pages/Worker'
 import Task from './pages/Tasks'
+import Monitor from './pages/Monitor'
 
 function App() {
 
@@ -38,6 +39,10 @@ function App() {
             <Route 
               path="/task"
               element={user ? <Task/> : <Navigate to="/"/>}              
+            />
+            <Route 
+              path="/monitor"
+              element={user ? <Monitor/> : <Navigate to="/"/>}              
             />
           </Routes>
         </div>      

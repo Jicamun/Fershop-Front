@@ -15,6 +15,18 @@ const Task = () => {
     const [selectedWorker, setSelectedWorker] = useState(null);
     const [selectedTarea, setSelectedTarea] = useState(null);
 
+    useEffect(() => {
+        setSelectedWorker(null)
+        setSelectedTarea(null)       
+
+        if (user) {
+            if(!workers){
+                fetchWorkers()
+            }            
+        }
+        
+    }, [dispatch, tareasDispatch, workersDispatch, user])
+
     const fetchWorkers = async () => {          
         const response = await fetch('/api/workers/', {
             headers: {
@@ -64,12 +76,9 @@ const Task = () => {
             alert("Seleccione un trabajador y una tarea primero.")
             return
         }
-        if(!(tarea.status === 2)){
+        if(tarea.status !== 2){
             tarea.timeStart = Date.now()
-            
-            
-        } else {
-            
+        } else {            
             tarea.timeResumed.push(Date.now()) 
         }
 
@@ -155,19 +164,6 @@ const Task = () => {
             setSelectedTarea(null) 
         }
     }
-
-    useEffect(() => {
-        setSelectedWorker(null)
-        setSelectedTarea(null)       
-
-        if (user) {
-            if(!workers){
-                fetchWorkers()
-            }            
-        }
-        
-    }, [dispatch, tareasDispatch, workersDispatch, user])
-
 
     const handleWorkerClick = (worker) => {         
         tareasDispatch({type:'SET_TAREAS_SMALL', payload: []})

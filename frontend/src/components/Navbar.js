@@ -1,4 +1,4 @@
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useLogout } from '../hooks/useLogout'
 import { useAuthContext } from '../hooks/useAuthContext'
 
@@ -21,10 +21,13 @@ const Navbar = () => {
                     {user && (
                         <div>
                             <Link to="/workers">
-                            Workers
+                                Workers
                             </Link>
                             <Link to="/task">
                                 Taks
+                            </Link>
+                            <Link to="/monitor">
+                                Monitor
                             </Link>
                         </div>
                     )}

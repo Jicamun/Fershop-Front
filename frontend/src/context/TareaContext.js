@@ -32,5 +32,5 @@ export const TareasContextProvider = ({ children }) => {
 }
 
 TareasContextProvider.propTypes = {
-    children: PropTypes.string.isRequired
+    children: PropTypes.object.isRequired
 }

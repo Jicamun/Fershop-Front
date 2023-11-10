@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 // Date fns
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 
-const TareaDetails = ({ tarea }) => {
+const TareaDetails = ({ tarea, onClick }) => {
 
     const {dispatch} = useTareasContext()
     const {user} = useAuthContext()
@@ -33,6 +33,14 @@ const TareaDetails = ({ tarea }) => {
             return
         } 
     }
+
+    const handleKeyPress = (event) => {
+        
+        if (event.key === 'Enter' || event.key === ' ') {
+            // Llama a la función de clic cuando se presiona Enter o Espacio
+            onClick(tarea);
+        }
+    };
 
     return (
         <div className="tarea-details">
@@ -62,7 +70,7 @@ const TareaDetails = ({ tarea }) => {
                 })()}
             </p>
             <p> {formatDistanceToNow(new Date(tarea.createdAt), {addSuffix: true})} </p>
-            <span className="material-symbols-outlined" onClick={handleClick}>delete_forever</span>
+            <span className="material-symbols-outlined" onClick={handleClick} onKeyDown={handleKeyPress}>delete_forever</span>
         </div>
     )
 }
@@ -77,6 +85,7 @@ TareaDetails.propTypes = {
         status: PropTypes.number.isRequired,
         createdAt: PropTypes.string.isRequired,
     }).isRequired,
+    onClick: PropTypes.func.isRequired,
 };
 
 const TareaDetailsSmall = ({ tarea, onClick, selected }) => {
