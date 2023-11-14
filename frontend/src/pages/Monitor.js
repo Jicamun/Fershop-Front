@@ -7,8 +7,7 @@ import 'antd/dist/reset.css'
 
 
 // Components
-import {TareaDetails} from '../components/TareaDetails'
-import {WorkerDetailsSmall} from '../components/WorkerDetails'
+import { TareaDetailsWithTime} from '../components/TareaDetails'
 
 const Monitor = () => {
     const {dispatch} = useAuthContext()
@@ -21,9 +20,10 @@ const Monitor = () => {
 
     const [selectedWorker, setSelectedWorker] = useState(null);
     const [selectedStatus, setSelectedStatus] = useState(null);
-    const [selectedTarea, setSelectedTarea] = useState(null);
     const [selectedDateRange, setSelectedDateRange] = useState([]);
-    const [searchColor, setSearchColor] = useState('');
+    const [startDate, setStartDate] = useState([]);
+    const [endDate, setEndDate] = useState([]);
+    const [colorText, setColorText] = useState('');
     const [clientText, setClientText] = useState('');
     const [unitText, setUnitText] = useState('');
 
@@ -56,9 +56,9 @@ const Monitor = () => {
         const stateObject = {
             selectedWorker,
             selectedStatus,
-            selectedTarea,
-            selectedDateRange,
-            searchColor,
+            startDate,
+            endDate,
+            colorText,
             clientText,
             unitText,
           };
@@ -68,13 +68,12 @@ const Monitor = () => {
         .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
         .join('&');
 
-        console.log(selectedDateRange)
+        console.log(filteredParams)
 
         const response = await fetch(`/api/tareas/all?${filteredParams}`, {
             headers: {
                 'Authorization' : `Bearer ${user.token}`
-            }
-            
+            }            
         })
         const json = await response.json()
 
@@ -89,69 +88,99 @@ const Monitor = () => {
 
     const resetFilters = () => {
         setSelectedDateRange([]);  // O cualquier valor inicial que desees para las fechas
-        setSearchColor('');
+        setColorText('');
         setSelectedWorker(null);  // O cualquier valor inicial que desees para el trabajador
         setSelectedStatus(null);  // O cualquier valor inicial que desees para el status
         setClientText('');
         setUnitText('');
     };
 
+    const formatDate = (date) => {
+        const dateObject = new Date(date)
+
+        const day = dateObject.getDate();
+        const month = dateObject.getMonth() + 1;
+        const year = dateObject.getFullYear();
+    
+        return `${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}-${year}`;
+      };
+
+    const handleDateRangeChange = (dates) => {
+        setSelectedDateRange(dates);
+    
+        if (dates && dates.length === 2) {
+          setStartDate(formatDate(dates[0]));
+          setEndDate(formatDate(dates[1]));
+        } else {
+          setStartDate('');
+          setEndDate('');
+        }
+
+    }
+
 
     return(
         
         <div className="monitorInterface">
-
             <div className='filter-container'>
-                    <RangePicker
-                        value={selectedDateRange}
-                        onChange={(dates) => setSelectedDateRange(dates)}
-                        //format="DD-MM-YYYY"
-                    />
-                    <Input
-                        placeholder="Color"
-                        value={searchColor}
-                        onChange={(e) => setSearchColor(e.target.value)}
-                    />
-                    <Select
-                        placeholder="Trabajador"
-                        value={selectedWorker}
-                        onChange={(value) => setSelectedWorker(value)}
-                    >      
-                        {workers?.map((worker) => (
-                            <Option key={worker._id}> {worker.name} </Option>
-                        ))}  
-                    </Select>
-                    <Select
-                        placeholder="Status"
-                        value={selectedStatus}
-                        onChange={(value) => setSelectedStatus(value)}
-                    >
-                        <Option value="0">Nueva</Option>
-                        <Option value="1">En Proceso</Option>
-                        <Option value="2">En Pausa</Option>
-                        <Option value="3">Finalizada</Option>
-                    </Select>
-                    <Input
-                        placeholder="Cliente"
-                        value={clientText}
-                        onChange={(e) => setClientText(e.target.value)}
-                    />
-                    <Input
-                        placeholder="Unidad"
-                        value={unitText}
-                        onChange={(e) => setUnitText(e.target.value)}
-                    />
-                    <Button type="primary" onClick={applyFilters}>
-                        Aplicar Filtros
-                    </Button>
-                    <Button onClick={resetFilters}>
-                        Reset Filtros
-                    </Button>
+                <RangePicker
+                    style={{width:2000}}
+                    value={selectedDateRange}
+                    onChange={handleDateRangeChange}
+                    format="DD-MM-YYYY"
+                />
+                <Input
+                    placeholder="Color"
+                    value={colorText}
+                    onChange={(e) => setColorText(e.target.value)}
+                />
+                <Select
+                    placeholder="Trabajador"
+                    value={selectedWorker}
+                    onChange={(value) => setSelectedWorker(value)}
+                >      
+                    {workers?.map((worker) => (
+                        <Option key={worker._id}> {worker.name} </Option>
+                    ))}  
+                </Select>
+                <Select
+                
+                    placeholder="Status"
+                    value={selectedStatus}
+                    onChange={(value) => setSelectedStatus(value)}
+                >
+                    <Option value="0">Nueva</Option>
+                    <Option value="1">En Proceso</Option>
+                    <Option value="2">En Pausa</Option>
+                    <Option value="3">Finalizada</Option>
+                </Select>
+                <Input
+                    
+                    placeholder="Cliente"
+                    value={clientText}
+                    onChange={(e) => setClientText(e.target.value)}
+                />
+                <Input
+                    placeholder="Unidad"
+                    value={unitText}
+                    onChange={(e) => setUnitText(e.target.value)}
+                />
+                <Button 
+                    type="primary" 
+                    onClick={applyFilters}
+                >
+                    Aplicar Filtros
+                </Button>
+                <Button 
+                    onClick={resetFilters}
+                >
+                    Reset Filtros
+                </Button>
             </div>
             <div className='tareas'>
             <h1>Tareas</h1>
-                {tareas?.map((tarea) => (
-                    <TareaDetails key={tarea._id} tarea={tarea}/>
+                {tareas?.map((tarea, /*worker*/) => (
+                    <TareaDetailsWithTime key={tarea._id} tarea={tarea} /*worker={worker}*//>
                 ))}
             </div>
         </div>

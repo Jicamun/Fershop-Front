@@ -4,47 +4,13 @@ const mongoose = require('mongoose')
 // GET All Tareas
 const getTareas = async (req, res) => {
     try {
-        const user_id = req.user._id
-
-        let { selectedWorker, selectedStatus, selectedDateRange, searchColor, clientText, unitText } = req.query;
-
-        if(selectedStatus === '0'){
-            selectedWorker = ''
-        }
         
-        const parametros = {
-            user_id,
-            worker_id:selectedWorker,
-            status:selectedStatus,        
-            selectedDateRange,
-            color:searchColor,
-            cliente:clientText,
-            unidad:unitText
-        };
+        const filter = getFilter(req)
 
-        const filtro = Object.fromEntries(
-            Object.entries(parametros).filter(([key, value]) => value !== undefined && value !== null && value !== '')
-        );
-
-        filtro.user_id = user_id;
-
-        if (selectedDateRange && selectedDateRange.length === 2) {
-            filtro.timeStart = {
-                $gte: new Date(selectedDateRange[0]),
-                $lte: new Date(selectedDateRange[1]),
-            };
-        }
-
-       
-
-        
-
-        console.log(filtro)
-
-        const tareas = await Tarea.find( filtro ).sort({ status: 1 })
+        const tareas = await Tarea.find( filter ).sort({ status: 1 })
         res.status(200).json(tareas)
-    } catch {
-        
+    } catch (error){
+        console.log(error.message)
     }
 }
 
@@ -234,6 +200,60 @@ const updateTarea = async (req, res) => {
     res.status(200).json(tarea)
 
 }
+
+
+const getFilter = (req) => {
+    let { selectedWorker, selectedStatus, startDate, endDate, colorText, clientText, unitText } = req.query;
+        const user_id = req.user._id
+
+        if(selectedStatus === '0'){
+            selectedWorker = ''
+        }
+
+        const parameters = {
+            user_id,
+            worker_id:selectedWorker,
+            status:selectedStatus,        
+            color:colorText,
+            cliente:clientText,
+            unidad:unitText
+        };
+
+        const filter = Object.fromEntries(
+            Object.entries(parameters).filter(([key, value]) => value !== undefined && value !== null && value !== '')
+        );
+
+        filter.user_id = user_id;
+
+        if (colorText) {
+            filter.color = { $regex: new RegExp(colorText, 'i') }; 
+        }
+    
+        if (clientText) {
+            filter.cliente = { $regex: new RegExp(clientText, 'i') };
+        }
+    
+        if (unitText) {
+            filter.unidad = { $regex: new RegExp(unitText, 'i') };
+        }
+
+        if (startDate && endDate && !isNaN(new Date(startDate).getTime()) && !isNaN(new Date(endDate).getTime())) {
+            const utcStartDate = new Date(startDate);
+            let utcEndDate = new Date(endDate);
+
+            if (utcStartDate.toDateString() === utcEndDate.toDateString()) {
+                utcEndDate = new Date(utcEndDate.getFullYear(), utcEndDate.getMonth(), utcEndDate.getDate(), 23, 59, 59, 999);
+            }
+    
+            filter.timeStart = {
+                $gte: new Date(utcStartDate),
+                $lte: new Date(utcEndDate),
+            };
+        }
+        console.log(filter)
+    return filter
+} 
+ 
 
 module.exports = {
     createTarea,
