@@ -1,6 +1,7 @@
 import { useState, useRef } from "react"
 import { useWorkersContext } from "../hooks/useWorkersContext"
 import { useAuthContext } from "../hooks/useAuthContext"
+const baseUrl = process.env.REACT_APP_API_URL || '';
 
 const WorkerForm = () => {
     const { dispatch } = useWorkersContext()
@@ -25,7 +26,7 @@ const WorkerForm = () => {
 
         const tarea = {name, birthdate, salary, type}
 
-        const response = await fetch('/api/workers', {
+        const response = await fetch( baseUrl + '/api/workers', {
             method: 'POST',
             body: JSON.stringify(tarea),
             headers: {

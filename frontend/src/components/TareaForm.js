@@ -1,6 +1,7 @@
 import { useState, useRef } from "react"
 import { useTareasContext } from "../hooks/useTareasContext"
 import { useAuthContext } from "../hooks/useAuthContext"
+const baseUrl = process.env.REACT_APP_API_URL || '';
 
 const TareaForm = () => {
     const { dispatch } = useTareasContext()
@@ -26,7 +27,7 @@ const TareaForm = () => {
 
         const tarea = {cantidad, calidad, color, cliente, unidad}
 
-        const response = await fetch('/api/tareas', {
+        const response = await fetch( baseUrl + '/api/tareas', {
             method: 'POST',
             body: JSON.stringify(tarea),
             headers: {

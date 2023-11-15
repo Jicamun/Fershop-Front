@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 // Date fns
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
+const baseUrl = process.env.REACT_APP_API_URL || '';
 
 const TareaDetails = ({ tarea, onClick }) => {
 
@@ -18,7 +19,7 @@ const TareaDetails = ({ tarea, onClick }) => {
         const confirmDelete = window.confirm("¿Seguro que quieres borrar esta tarea?");
 
         if (confirmDelete) {
-            const response = await fetch('/api/tareas/' + tarea._id, {
+            const response = await fetch( baseUrl + '/api/tareas/' + tarea._id, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${user.token}`
@@ -137,6 +138,7 @@ const TareaDetailsWithTime = ({ tarea, worker, onClick }) => {
 
     const {dispatch} = useTareasContext()
     const {user} = useAuthContext()
+    const baseUrl = process.env.REACT_APP_API_URL || '';
 
     const handleClick = async () => {
         if(!user){
@@ -146,7 +148,7 @@ const TareaDetailsWithTime = ({ tarea, worker, onClick }) => {
         const confirmDelete = window.confirm("¿Seguro que quieres borrar esta tarea?");
 
         if (confirmDelete) {
-            const response = await fetch('/api/tareas/' + tarea._id, {
+            const response = await fetch( baseUrl + '/api/tareas/' + tarea._id, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${user.token}`

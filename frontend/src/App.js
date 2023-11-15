@@ -12,7 +12,7 @@ import Task from './pages/Tasks'
 import Monitor from './pages/Monitor'
 
 function App() {
-  const [workMode, setWorkMode] = useState(false)
+  const [workMode, setWorkMode] = useState(true)
   const [isAdmin, setIsAdmin] = useState(true)
   const [pinCode, setPinCode] = useState('0000')
 
@@ -38,11 +38,11 @@ function App() {
               />
               <Route
                 path="/login"
-                element={!user ? <Login /> : <Navigate to="/login" />}
+                element={!user ? <Login /> : <Navigate to="/" />}
               />
               <Route
                 path="/signup"
-                element={!user ? <Signup /> : <Navigate to="/login" />}
+                element={!user ? <Signup /> : <Navigate to="/" />}
               />
               <Route
                 path="/workers"

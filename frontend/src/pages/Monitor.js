@@ -6,8 +6,11 @@ import { DatePicker, Input, Select, Button } from 'antd';
 import 'antd/dist/reset.css'
 
 
+
 // Components
 import { TareaDetailsWithTime} from '../components/TareaDetails'
+
+const baseUrl = process.env.REACT_APP_API_URL || '';
 
 const Monitor = () => {
     const {dispatch} = useAuthContext()
@@ -39,7 +42,7 @@ const Monitor = () => {
     }, [dispatch, tareasDispatch, workersDispatch, user])
 
     const fetchWorkers = async () => {          
-        const response = await fetch('/api/workers/', {
+        const response = await fetch( baseUrl + '/api/workers/', {
             headers: {
                 'Authorization' : `Bearer ${user.token}`
             }
@@ -70,7 +73,7 @@ const Monitor = () => {
 
         console.log(filteredParams)
 
-        const response = await fetch(`/api/tareas/all?${filteredParams}`, {
+        const response = await fetch( baseUrl + `/api/tareas/all?${filteredParams}`, {
             headers: {
                 'Authorization' : `Bearer ${user.token}`
             }            

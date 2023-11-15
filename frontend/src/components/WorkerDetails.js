@@ -4,6 +4,7 @@ import { useWorkersContext } from "../hooks/useWorkersContext"
 // Date fns
 //import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 import {format, parseISO} from 'date-fns'
+const baseUrl = process.env.REACT_APP_API_URL || '';
 
 const WorkerDetails = ({ worker }) => {
 
@@ -15,7 +16,7 @@ const WorkerDetails = ({ worker }) => {
             return
         }
         
-        const response = await fetch('/api/workers/' + worker._id, {
+        const response = await fetch( baseUrl + '/api/workers/' + worker._id, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${user.token}`

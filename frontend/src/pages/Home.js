@@ -6,6 +6,8 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import {TareaDetails} from '../components/TareaDetails'
 import TareaForm from '../components/TareaForm'
 
+const baseUrl = process.env.REACT_APP_API_URL || '';
+
 const Home = () => {
 
     const {tareas, dispatch} = useTareasContext()
@@ -13,7 +15,7 @@ const Home = () => {
 
     useEffect(() => {
         const fetchTareas = async () => {          
-            const response = await fetch('/api/tareas/all', {
+            const response = await fetch( baseUrl + '/api/tareas/all', {
                 headers: {
                     'Authorization' : `Bearer ${user.token}`
                 }

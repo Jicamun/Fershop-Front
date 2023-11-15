@@ -7,6 +7,8 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import {TareaDetailsSmall} from '../components/TareaDetails'
 import {WorkerDetailsSmall} from '../components/WorkerDetails'
 
+const baseUrl = process.env.REACT_APP_API_URL || '';
+
 const Task = () => {
     const {dispatch} = useAuthContext()
     const {workers, dispatch: workersDispatch} = useWorkersContext()
@@ -28,7 +30,7 @@ const Task = () => {
     }, [dispatch, tareasDispatch, workersDispatch, user])
 
     const fetchWorkers = async () => {          
-        const response = await fetch('/api/workers/', {
+        const response = await fetch( baseUrl + '/api/workers/', {
             headers: {
                 'Authorization' : `Bearer ${user.token}`
             }
@@ -41,7 +43,7 @@ const Task = () => {
     }
 
     const fetchFreeTareas = async () => {
-        const response = await fetch('/api/tareas/free', {
+        const response = await fetch( baseUrl + '/api/tareas/free', {
             headers: {
                 'Authorization' : `Bearer ${user.token}`
             }
@@ -54,7 +56,7 @@ const Task = () => {
     }
 
     const fetchTareasByWorker = async (worker) => {
-        const response = await fetch('/api/tareas/started/' + worker._id, {
+        const response = await fetch( baseUrl + '/api/tareas/started/' + worker._id, {
             headers: {
                 'Authorization' : `Bearer ${user.token}`
             }
@@ -85,14 +87,7 @@ const Task = () => {
         tarea.status = 1;
         tarea.worker_id = worker._id;
 
-        const response = await fetch('/api/tareas/' + tarea._id, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type':'application/json',
-                'Authorization' : `Bearer ${user.token}`
-            },
-            body: JSON.stringify(tarea)
-        })
+        const response = await updateTarea(tarea)
 
         if(response.ok){
             setSelectedTarea(null) 
@@ -106,14 +101,7 @@ const Task = () => {
         tarea.status = 2;
         tarea.timePaused.push(Date.now()) 
         
-        const response = await fetch('/api/tareas/' + tarea._id, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type':'application/json',
-                'Authorization' : `Bearer ${user.token}`
-            },
-            body: JSON.stringify(tarea)
-        })
+        const response = await updateTarea(tarea)
         
         if(response.ok){
             setSelectedTarea(null) 
@@ -127,14 +115,7 @@ const Task = () => {
         tarea.status = 3;
         tarea.timeFinish = Date.now()
 
-        const response = await fetch('/api/tareas/' + tarea._id, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type':'application/json',
-                'Authorization' : `Bearer ${user.token}`
-            },
-            body: JSON.stringify(tarea)
-        })
+        const response = await updateTarea(tarea)
 
         if(response.ok){
             setSelectedTarea(null)
@@ -151,14 +132,7 @@ const Task = () => {
         tarea.timePaused = null
         tarea.timeFinished = null
 
-        const response = await fetch('/api/tareas/' + tarea._id, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type':'application/json',
-                'Authorization' : `Bearer ${user.token}`
-            },
-            body: JSON.stringify(tarea)
-        })
+        const response = await updateTarea(tarea)
 
         if(response.ok){
             setSelectedTarea(null) 
@@ -229,6 +203,19 @@ const Task = () => {
             alert("An error has ocurred")
         }
         
+    }
+
+    const updateTarea = async (tarea) => {
+        const response = await fetch( baseUrl + '/api/tareas/' + tarea._id, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization' : `Bearer ${user.token}`
+            },
+            body: JSON.stringify(tarea)
+        })
+
+        return response
     }
 
     

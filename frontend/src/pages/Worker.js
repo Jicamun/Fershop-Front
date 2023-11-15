@@ -6,6 +6,8 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import {WorkerDetails} from '../components/WorkerDetails'
 import WorkerForm from '../components/WorkerForm'
 
+const baseUrl = process.env.REACT_APP_API_URL || '';
+
 const Worker = () => {
 
     const {workers, dispatch} = useWorkersContext()
@@ -13,7 +15,7 @@ const Worker = () => {
 
     useEffect(() => {
         const fetchWorkers = async () => {          
-            const response = await fetch('/api/workers/', {
+            const response = await fetch(baseUrl + '/api/workers/', {
                 headers: {
                     'Authorization' : `Bearer ${user.token}`
                 }
