@@ -250,7 +250,7 @@ const getFilter = (req) => {
                 $lte: new Date(utcEndDate),
             };
         }
-        console.log(filter)
+        
     return filter
 } 
  

@@ -1,3 +1,4 @@
+import React, {useState} from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthContext } from './hooks/useAuthContext';
 
@@ -11,41 +12,52 @@ import Task from './pages/Tasks'
 import Monitor from './pages/Monitor'
 
 function App() {
+  const [workMode, setWorkMode] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(true)
+  const [pinCode, setPinCode] = useState('0000')
+
+  const enableWorkMode = (enteredPin) => {
+    if (enteredPin === pinCode) {
+      setWorkMode(!workMode);
+    } else {
+      alert('Invalid PIN code');
+    }
+  }
 
   const { user } = useAuthContext()
   
   return (
     <div className="App">
       <BrowserRouter>
-        <Navbar/>
-        <div className="pages">
-          <Routes>
-            <Route 
-              path="/"
-              element={user ? <Home/> : <Navigate to= "/login"/>} 
-            />
-            <Route 
-              path="/login"
-              element={!user ? <Login/> : <Navigate to="/"/>}
-            />
-            <Route 
-              path="/signup"
-              element={!user ? <Signup/> : <Navigate to="/"/>}
-            />            
-            <Route 
-              path="/workers"
-              element={user ? <Worker/> : <Navigate to="/"/>}              
-            />
-            <Route 
-              path="/task"
-              element={user ? <Task/> : <Navigate to="/"/>}              
-            />
-            <Route 
-              path="/monitor"
-              element={user ? <Monitor/> : <Navigate to="/"/>}              
-            />
-          </Routes>
-        </div>      
+        <Navbar workMode={workMode} isAdmin={isAdmin} enableWorkMode={enableWorkMode}/>
+          <div className="pages">
+            <Routes>
+              <Route
+                path="/"
+                element={user ? <Home workMode={workMode} /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/login"
+                element={!user ? <Login /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/signup"
+                element={!user ? <Signup /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/workers"
+                element={user ? <Worker workMode={workMode} /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/tasks"
+                element={user ? <Task workMode={workMode} /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/monitor"
+                element={user ? <Monitor workMode={workMode} /> : <Navigate to="/login" />}
+              />
+            </Routes>
+          </div>      
       </BrowserRouter>
     </div>
   );
