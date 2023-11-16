@@ -1,0 +1,51 @@
+header {
+    background: #FFF
+}
+
+header .container {
+    max-width: 75%;
+    margin: 0 auto;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header a {
+    color: #666;
+    text-decoration: none;
+}
+  
+nav {
+    display: flex;
+    align-items: flex-end;
+}
+
+nav a {
+    margin-left: 10px;
+}
+
+nav button {
+    background: #FFF;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+    font-size: 1em;
+    
+}
+
+header img {
+    width: 15%;
+}
+
+.logo {
+    display: flex;
+}
+
+.logo:hover {
+    color: #666;
+    font-size: 55em;
+}

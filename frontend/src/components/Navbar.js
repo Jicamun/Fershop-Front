@@ -15,54 +15,62 @@ const Navbar = ({ workMode, enableWorkMode }) => {
         <header>
             <div className="container">
                 <Link to="/">
-                <h1>Fershop Rallys</h1>
+                    <div className='logo'>                                                
+                        <h1>Fershop</h1>
+                    </div>                
                 </Link>
-                <nav>
-                    {user && (
-                        <div>
-                        {workMode ? (
-                            <p>Work Mode Enabled</p>
-                        ) : (
-                            <>
-                            <Link to="/workers">Workers</Link>
-                            <Link to="/tasks">Tasks</Link>
-                            <Link to="/monitor">Monitor</Link>
-                            </>
+                <div id='mainNav'>
+                    <nav className='options'>
+                        {user && (
+                            <div className='options'>
+                            {workMode ? (
+                                <>
+                                <Link to="/workers">Workers</Link>
+                                <Link to="/tasks">Tasks</Link>                        
+                                </>
+                            ) : (
+                                <>
+                                <Link to="/workers">Workers</Link>
+                                <Link to="/tasks">Tasks</Link>
+                                <Link to="/monitor">Monitor</Link>
+                                </>
+                            )}
+                            </div>
                         )}
-                        </div>
-                    )}
-                </nav>
+                    </nav>
 
-                <nav>
-                    {user && (
-                        <div>
-                        <span>{user.email}</span>
-                        {workMode ? (""): (
-                            <button onClick={handleClick}>Log out</button>
+                    <nav className='user-options'>
+                        {user && (
+                            <div className='user-options'>
+                                {workMode ? '' : (<Link to="/settings">Settings</Link>)}
+                                <a>{user.email}</a>
+                                {workMode ? (""): (
+                                    <button onClick={handleClick}>Log out</button>
+                                )}
+                            </div>
                         )}
-                        </div>
-                    )}
-                    {!user && (
-                        <div>
-                        <Link to="/login">Login</Link>
-                        <Link to="/signup">Signup</Link>
-                        </div>
-                    )}
-                    {user && (
-                        <div>
-                        {workMode ? '' : (<Link to="/settings">Settings</Link>)}
-                        {workMode ? (
-                            <button onClick={() => enableWorkMode(prompt('Ingrese PIN:'))}>
-                            Disable Work Mode
-                            </button>
-                        ) : (
-                            <button onClick={() => enableWorkMode(prompt('Ingrese PIN:'))}>
-                            Enable Work Mode
-                            </button>
+                        {!user && (
+                            <div className='authentication'>
+                            <Link to="/login">Login</Link>
+                            <Link to="/signup">Signup</Link>
+                            </div>
                         )}
-                        </div>
-                    )}
-                </nav>
+                        {user && (
+                            <div className='workmode' >                        
+                            {workMode ? (
+                                <button onClick={() => enableWorkMode(prompt('Ingrese PIN:'))}>
+                                Disable Work Mode
+                                </button>
+                            ) : (
+                                <button onClick={() => enableWorkMode(prompt('Ingrese PIN:'))}>
+                                Enable Work Mode
+                                </button>
+                            )}
+                            </div>
+                        )}
+                    </nav>
+                </div>
+                
             </div>
         </header>
     )

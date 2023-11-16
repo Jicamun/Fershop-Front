@@ -8,32 +8,39 @@ export const useLogin = () => {
     const baseUrl = process.env.REACT_APP_API_URL || '';
 
     const login = async (email, password) => {
+        try{
 
-        setIsLoading(true)
-        setError(null)
+            setIsLoading(true)
+            setError(null)
 
-        const response = await fetch( baseUrl +'/api/user/login', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({email, password})
-        })
+            const response = await fetch( baseUrl +'/api/user/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email, password})
+            })
 
-        const json = await response.json()
+            const json = await response.json()
 
-        if(!response.ok){
-            setIsLoading(false)
-            setError(json.error)
+            if(!response.ok){
+                setIsLoading(false)
+                setError(json.error)
+            }
+            if(response.ok){
+                // Save the user to local storage
+                localStorage.setItem('user', JSON.stringify(json))
+
+                // Update the Auth Context
+                dispatch({type: 'LOGIN', payload: json})
+
+                // Update loading state
+                setIsLoading(false)
+            }
+
+        } catch(error) {
+            console.log(error.message)
         }
-        if(response.ok){
-            // Save the user to local storage
-            localStorage.setItem('user', JSON.stringify(json))
 
-            // Update the Auth Context
-            dispatch({type: 'LOGIN', payload: json})
-
-            // Update loading state
-            setIsLoading(false)
-        }
+        
 
     }
     

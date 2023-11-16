@@ -223,7 +223,7 @@ const Task = () => {
     return (
         <div className="igualadorInterface">
             <div className='workers'>
-                <h1>Igualadores</h1>
+                <h3>Igualadores</h3>
 
                 {workers?.map((worker) => (
                     <WorkerDetailsSmall 
@@ -238,7 +238,7 @@ const Task = () => {
             <div 
                 className="tareas"
             >
-                <h1>Lista de Colores</h1>
+                <h3>Colores</h3>
                 <div 
                     className={`row tareas-row ${selectedWorker ? '' : 'disabled-div'}`
                      }
@@ -259,7 +259,7 @@ const Task = () => {
                 className='buttons'
                 disabled={!selectedTarea}
             >
-                <h1>Acción</h1>
+                <h3>Acción</h3>
                 <div className={`buttons ${selectedTarea ? '' : 'disabled-div'}`}>
                     <div className={`button-row button-start ${selectedTarea && (selectedTarea.status === 0 || selectedTarea.status === 2) ? '' : 'disabled-div'}`}>
                         <button 
