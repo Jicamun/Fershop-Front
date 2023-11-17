@@ -4,13 +4,19 @@ import { useSignup } from '../hooks/useSignup'
 const Signup = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [pin, setPin] = useState('')
     const {signup, isLoading, error} = useSignup()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        await signup(email, password)
+        await signup(email, password, pin)
     }
+
+    const handleInputChange = (e) => {
+        const input = e.target.value.replace(/\D/g, ''); // Elimina todo lo que no sea un dígito
+        setPin(input);
+    };
 
 
     return (
@@ -28,6 +34,13 @@ const Signup = () => {
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
+            />
+            <label>Pin:</label>
+            <input 
+                type="password"
+                pattern='[0-9]*'
+                onChange={handleInputChange}
+                value={pin}
             />
 
             <button disabled={isLoading}>Sign up</button>

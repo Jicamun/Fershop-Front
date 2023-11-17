@@ -14,8 +14,9 @@ const loginUser = async (req, res) => {
 
         // Create Token
         const token = createToken(user._id)
+        const pin = user.pin
 
-        res.status(200).json({email, token})
+        res.status(200).json({email, token, pin})
     } catch (error) {
         res.status(400).json({error: error.message})
     }
@@ -23,10 +24,10 @@ const loginUser = async (req, res) => {
 
 // Signup user
 const signupUser = async (req, res) => {
-    const {email, password} = req.body
+    const {email, password, pin} = req.body
 
     try{
-        const user = await User.signup(email, password)
+        const user = await User.signup(email, password, pin)
 
         // Create Token
         const token = createToken(user._id)
@@ -37,7 +38,23 @@ const signupUser = async (req, res) => {
     }
 }
 
+// Check Pin
+const pinCheck = async (req, res) => {
+    const {email, pin} = req.body
+    
+    try{
+        let checked = false
+        console.log(pin, email)
+        checked = await User.pinCheck(pin, email)
+
+        res.status(200).json({checked})
+    } catch (error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
 module.exports = {
     loginUser,
-    signupUser
+    signupUser,
+    pinCheck
 }

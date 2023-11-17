@@ -16,13 +16,13 @@ const userSchema = new Schema({
         required: true
     },
     pin: {
-        type: Number,
+        type: String,
         required: true
     }
 })
 
 // Static Signup method
-userSchema.statics.signup = async function(email, password) {
+userSchema.statics.signup = async function(email, password, pin) {
 
     // Validation 
     if (!email || !password){
@@ -34,6 +34,11 @@ userSchema.statics.signup = async function(email, password) {
     if (!validator.isStrongPassword(password)){
         throw Error('Password not strogn enough')
     }
+    console.log(pin)
+    console.log(password)
+    if (pin < 999 || pin > 10000){
+        throw Error('PIN has to be 4 digits long')
+    }
 
     const exists = await this.findOne({email})
     if(exists){
@@ -43,7 +48,10 @@ userSchema.statics.signup = async function(email, password) {
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
 
-    const user = await this.create({ email, password: hash })
+    const salt2 = await bcrypt.genSalt(10)
+    const hash2 = await bcrypt.hash(pin, salt2)
+
+    const user = await this.create({ email, password: hash, pin: hash2 })
 
     return user
 }
@@ -70,5 +78,31 @@ userSchema.statics.login = async function(email, password) {
     return user
 
 }
+
+// Static Pin Check Method
+userSchema.statics.pinCheck = async function(pin, email) {
+    console.log(pin, email)
+    let match = false
+    if (!pin){
+        throw Error('All fields must be filled')
+    }
+    
+    const user = await this.findOne({email})
+
+    if(!user){
+        throw Error('User not found')
+    }
+
+    match = await bcrypt.compare(pin +"", user.pin+"")
+
+    if(!match){
+        throw Error('Wrong Pin')
+    }
+
+    return match
+
+}
+
+
 
 module.exports = mongoose.model('User', userSchema)

@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 const baseUrl = process.env.REACT_APP_API_URL || '';
 
-const TareaDetails = ({ tarea, onClick }) => {
+const TareaDetails = ({ tarea }) => {
 
     const {dispatch} = useTareasContext()
     const {user} = useAuthContext()
@@ -39,7 +39,7 @@ const TareaDetails = ({ tarea, onClick }) => {
         
         if (event.key === 'Enter' || event.key === ' ') {
             // Llama a la función de clic cuando se presiona Enter o Espacio
-            onClick(tarea);
+            //onClick(tarea);
         }
     };
 
@@ -87,7 +87,7 @@ TareaDetails.propTypes = {
         status: PropTypes.number.isRequired,
         createdAt: PropTypes.string.isRequired,
     }).isRequired,
-    onClick: PropTypes.func.isRequired,
+    //onClick: PropTypes.func.isRequired,
 };
 
 const TareaDetailsSmall = ({ tarea, onClick, selected }) => {

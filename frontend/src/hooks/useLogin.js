@@ -26,11 +26,14 @@ export const useLogin = () => {
                 setError(json.error)
             }
             if(response.ok){
-                // Save the user to local storage
-                localStorage.setItem('user', JSON.stringify(json))
+                
+                const { ['pin']: removedProperty, ...newJson } = json
 
                 // Update the Auth Context
-                dispatch({type: 'LOGIN', payload: json})
+                dispatch({type: 'LOGIN', payload: newJson})                
+                
+                // Save the user to local storage
+                localStorage.setItem('user', JSON.stringify(newJson))               
 
                 // Update loading state
                 setIsLoading(false)
