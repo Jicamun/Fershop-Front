@@ -42,19 +42,21 @@ const Navbar = ({ workMode, enableWorkMode, onClick }) => {
       <nav ref={navRef}>
         <div className="nav-elements">
           {user && (
-            workMode ? (
-              <>
-                <a onClick={showNavbar}> <Link to="/workers">Workers</Link> </a>
-                <a onClick={showNavbar}> <Link to="/tasks">Tasks</Link> </a>
-              </>
-            ) : (
-              <>
-                <a onClick={showNavbar}> <Link to="/workers">Workers</Link> </a>
-                <a onClick={showNavbar}> <Link to="/tasks">Tasks</Link> </a>
-                <a onClick={showNavbar}> <Link to="/monitor">Monitor</Link> </a>
-              </>
-            )
-
+            <>
+              <a onClick={showNavbar}><Link to="/">Home</Link></a>
+              {workMode ? (
+                <>
+                  <a onClick={showNavbar}><Link to="/workers">Workers</Link></a>
+                  <a onClick={showNavbar}><Link to="/tasks">Tasks</Link></a>
+                </>
+              ) : (
+                <>
+                  <a onClick={showNavbar}><Link to="/workers">Workers</Link></a>
+                  <a onClick={showNavbar}><Link to="/tasks">Tasks</Link></a>
+                  <a onClick={showNavbar}><Link to="/monitor">Monitor</Link></a>
+                </>
+              )}
+            </>
           )}
         </div>
 
