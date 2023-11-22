@@ -58,7 +58,7 @@ const TareaForm = () => {
 
     return (
 
-        <form className="create" onSubmit={handleSubmit}>
+        <form className="create-tarea" onSubmit={handleSubmit}>
 
             <h3>Add new Tarea</h3>
             <label>Cantidad (lts):</label>

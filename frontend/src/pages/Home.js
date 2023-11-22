@@ -36,12 +36,15 @@ const Home = () => {
     return (
         <div className="home">            
             <div className='tareas'>
-            <h1>Tareas</h1>
-                {tareas?.map((tarea) => (
-                    <TareaDetails key={tarea._id} tarea={tarea}/>
-                ))}
+                <h1>Tareas</h1>
+                    {tareas?.map((tarea) => (
+                        <TareaDetails key={tarea._id} tarea={tarea}/>
+                    ))}
             </div>
-            <TareaForm />
+            <div className="tarea-form">
+                <TareaForm />
+            </div>
+            
         </div>
     )
 }

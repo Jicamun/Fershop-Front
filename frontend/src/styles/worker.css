@@ -28,18 +28,18 @@
   flex-wrap: wrap; /* Allow items to wrap to the next line */
 }
 
-.igualadorInterface > .workers,
-.igualadorInterface > .tareas,
-.igualadorInterface > .buttons {
-  flex: 1;
+.igualadorInterface .workers,
+.igualadorInterface .tareas,
+.igualadorInterface .buttons {
   padding: 5px;
   border: 5px solid #cccccc2f;
   text-align: center;
   user-select: none;
   overflow-y: auto;
   overflow-x: hidden;
-  min-height: 100px; /* Set a minimum height for smaller screens */
+  max-height: 80vh; /* Set a maximum height to fit within the viewport */
   box-sizing: border-box; /* Ensure padding is included in width calculation */
+  min-height: 100px; /* Set a minimum height for smaller screens */
 }
 
 /* Set a minimum width for .tarea-details-small */
@@ -47,11 +47,15 @@
   min-width: 200px;
 }
 
-.igualadorInterface > .workers {
+.igualadorInterface .workers {
   flex: 2; /* 20% of the screen */
 }
 
-.igualadorInterface > .tareas {
+.igualadorInterface h3{
+  font-size: 1.3em;
+}
+
+.igualadorInterface .tareas {
   flex: 5; /* 70% of the screen */
 }
 
@@ -62,23 +66,22 @@
   align-items: center;
 }
 
-.buttons > .button-row {
+.buttons .button-row {
   display: flex;
   justify-content: center;
   cursor: pointer;
   padding: 20px;
   position: relative;
   transition: background-color 0.3s ease;
+  flex-direction: column;
 }
 
 .btn-square-md {
-  width: 100px !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
-  height: 100px !important;
+
+  height: 50px;
   text-align: center;
-  padding: 0px;
-  font-size: 12px;
+  padding: 0;
+  font-size: 1em;
 }
 
 .selected {
@@ -106,7 +109,7 @@
 
 /* Media Query for Small Screens (e.g., Mobile Phones) */
 
-@media (max-width: 1050px) {
+@media (max-width: 900px) {
   .igualadorInterface > .workers,
   .igualadorInterface > .tareas,
   .igualadorInterface > .buttons {

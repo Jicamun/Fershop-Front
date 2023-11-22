@@ -260,7 +260,7 @@ const Task = () => {
                 disabled={!selectedTarea}
             >
                 <h3>Acción</h3>
-                <div className={`buttons ${selectedTarea ? '' : 'disabled-div'}`}>
+                <div className={`button ${selectedTarea ? '' : 'disabled-div'}`}>
                     <div className={`button-row button-start ${selectedTarea && (selectedTarea.status === 0 || selectedTarea.status === 2) ? '' : 'disabled-div'}`}>
                         <button 
                             type="button" 

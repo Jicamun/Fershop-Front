@@ -41,7 +41,9 @@ const Worker = () => {
                     <WorkerDetails key={worker._id} worker={worker}/>
                 ))}
             </div>
-            <WorkerForm />
+            <div className='worker-form'>
+                <WorkerForm />
+            </div>
         </div>
     )
 }

@@ -5,18 +5,22 @@
     padding: 20px;
     position: relative;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
-  }
-  .tarea-details h4, .worker-details h4 {
+    animation: slideIn 0.5s ease-in-out;
+}
+
+.tarea-details h4, .worker-details h4 {
     margin: 0 0 10px 0;
     font-size: 1.2em;
     color: var(--primary);
-  }
-  .tarea-details p, .worker-details p {
+}
+
+.tarea-details p, .worker-details p {
     margin: 0;
     font-size: 0.9em;
     color: #555;
-  }
-  .tarea-details span, .worker-details span {
+}
+
+.tarea-details span, .worker-details span {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -25,4 +29,54 @@
     padding: 6px;
     border-radius: 50%;
     color: #333;
+}
+
+.home, .homeWorkers {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tarea-form, .worker-form{
+  animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tareas, .workers {
+  flex:7;
+}
+
+.tarea-form, .worker-form{
+  flex: 3;
+}
+
+@media (max-width: 800px) {
+  .home, .homeWorkers {
+    flex-direction: column-reverse;
+  }
+
+  /* Animación específica para pantallas pequeñas */
+  .tarea-details, .worker-details, .tarea-form, .worker-form {
+      animation: slideInMobile 0.5s ease-in-out;
+  }
+
+  @keyframes slideInMobile {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

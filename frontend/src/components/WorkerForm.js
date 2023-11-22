@@ -57,7 +57,7 @@ const WorkerForm = () => {
 
     return (
 
-        <form className="create" onSubmit={handleSubmit}>
+        <form className="create-worker" onSubmit={handleSubmit}>
 
             <h3>Add new Worker</h3>
             <label>Nombre(s):</label>
