@@ -128,9 +128,10 @@ const Task = () => {
             return
         }
         tarea.status = 0;
-        tarea.timeStart = null
-        tarea.timePaused = null
-        tarea.timeFinished = null
+        tarea.timeStart = ""
+        tarea.timePaused = []
+        tarea.timeResumed = []
+        tarea.timeFinish = ""
 
         const response = await updateTarea(tarea)
 

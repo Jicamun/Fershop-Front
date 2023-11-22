@@ -127,7 +127,7 @@ const Monitor = () => {
         <div className="monitorInterface">
             <div className='filter-container'>
                 <RangePicker
-                    style={{width:2000}}
+                    style={{width:'100%'}}
                     value={selectedDateRange}
                     onChange={handleDateRangeChange}
                     format="DD-MM-YYYY"
@@ -182,8 +182,8 @@ const Monitor = () => {
             </div>
             <div className='tareas'>
             <h1>Tareas</h1>
-                {tareas?.map((tarea, /*worker*/) => (
-                    <TareaDetailsWithTime key={tarea._id} tarea={tarea} /*worker={worker}*//>
+                {tareas?.map((tarea, worker) => (
+                    <TareaDetailsWithTime key={tarea._id} tarea={tarea} worker={worker}/>
                 ))}
             </div>
         </div>

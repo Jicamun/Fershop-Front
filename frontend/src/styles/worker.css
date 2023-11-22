@@ -106,7 +106,7 @@
 
 /* Media Query for Small Screens (e.g., Mobile Phones) */
 
-@media (max-width: 1300px) {
+@media (max-width: 1050px) {
   .igualadorInterface > .workers,
   .igualadorInterface > .tareas,
   .igualadorInterface > .buttons {

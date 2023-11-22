@@ -186,12 +186,12 @@ const TareaDetailsWithTime = ({ tarea, worker, onClick }) => {
                 if (totalSeconds >= 60) {
                     totalMinutes++;
                     totalSeconds -= 60;
-                  }
-                  
-                  if (totalMinutes >= 60) {
+                    }
+                    
+                    if (totalMinutes >= 60) {
                     totalHours++;
                     totalMinutes -= 60;
-                  }
+                    }
             }
 
             const aux = getTimeDifferenceDate(tarea.timeStart, tarea.timeFinish )
@@ -204,7 +204,7 @@ const TareaDetailsWithTime = ({ tarea, worker, onClick }) => {
             const aux = getTimeDifferenceDate(tarea.timeStart, tarea.timeFinish )
             const total = formatTime(aux.hours, aux.minutes, aux.seconds)
             return {totalTime: total, totalPausedTime: "00:00:00" }
-        }
+        }      
 
     }
 

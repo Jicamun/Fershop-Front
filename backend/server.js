@@ -38,12 +38,13 @@ app.use('/api/tareas', tareaRoutes)
 app.use('/api/workers', workerRoutes)
 
 // Connect to DB
+const port = process.env.PORT;
 
 mongoose.connect(uri)
     .then( () => {
         // Listen for requests
-        app.listen(process.env.PORT, () => {
-            console.log('Connected to DB, Up & Running on port ' + process.env.PORT)
+        app.listen(port, () => {
+            console.log('Connected to DB, Up & Running on port ' + port)
         })
     })
     .catch((error) => {

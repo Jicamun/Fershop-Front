@@ -1,0 +1,66 @@
+/* Filtros  */
+@media (min-width: 769px){
+    .filter-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  
+    .filter-container > .row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 10px; /* Ajusta el margen según sea necesario */
+    }
+  
+    /* Para el primer grupo en la primera fila */
+    .first-row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between; /* Esto alinea los elementos en ambos extremos */
+    }
+  
+    /* Para el segundo grupo en la segunda fila */
+    .second-row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between; /* Esto alinea los elementos en ambos extremos */
+    }
+  }
+  
+  @media (max-width: 1300px) {
+    .filter-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    /* Opcional: Alineación horizontal y centrado de elementos */
+    .filter-container > * {
+      align-self: center;
+      width: 100%;
+    }
+  
+    /* Ajustes específicos para el botón */
+    .filter-container button {
+      width: auto;
+    }
+  
+    .filter-container > .row {
+      display: column;
+      flex-wrap: wrap;
+      margin-bottom: 10px; /* Ajusta el margen según sea necesario */
+    }
+  
+    .first-row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between; /* Esto alinea los elementos en ambos extremos */
+    }
+  
+    /* Para el segundo grupo en la segunda fila */
+    .second-row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between; /* Esto alinea los elementos en ambos extremos */
+    }
+  }

@@ -1,34 +1,62 @@
+:root {
+	--mainColor: #29335c;
+	--mainColorLight: #5767aa;
+	--secondaryColor: #db2b39;
+	--textColor: #eee;
+}
+
 header {
-    background: #FFF
-}
-
-header .container {
-    max-width: 75%;
-    margin: 0 auto;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
     justify-content: space-between;
+	height: 5rem;
+	padding: 0 2rem;
+	background-color: var(--mainColor);
+	color: var(--textColor);
 }
 
-header a {
-    color: #666;
-    text-decoration: none;
-}
-  
-nav {
-    display: flex;
-    align-items: flex-end;
+header nav {
+    flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 80px;
+    
+	padding: 0 2rem;
+	background-color: var(--mainColor);
+	color: var(--textColor);
 }
 
 nav a {
-    margin-left: 10px;
+	margin: 0 1rem;
+	color: var(--textColor);
+	text-decoration: none;
 }
 
+header a:hover {
+	color: var(--secondaryColor);
+}
+
+header .nav-btn {
+	padding: 5px;
+	cursor: pointer;
+	background: transparent;
+	border: none;
+	outline: none;
+	color: var(--textColor);
+	visibility: hidden;
+    display: none;
+	opacity: 0;
+	font-size: 1.8rem;
+}
+
+
+
+
 nav button {
-    background: #FFF;
-    color: var(--primary);
-    border: 2px solid var(--primary);
+    background: var(--mainColorLight);
+    color: var(--textColor);
+    border: 2px solid var(--textColor);
     padding: 6px 10px;
     border-radius: 4px;
     font-family: "Poppins", sans-serif;
@@ -37,15 +65,46 @@ nav button {
     
 }
 
-header img {
-    width: 15%;
+header div,
+nav {
+	display: flex;
+	align-items: center;
 }
 
-.logo {
-    display: flex;
-}
+@media only screen and (max-width: 996px) {
+	header .nav-btn {
+		visibility: visible;
+        display: block;
+		opacity: 1;
+	}
 
-.logo:hover {
-    color: #666;
-    font-size: 55em;
+	header nav {
+		position: fixed;
+		top: -200vh;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 1.5rem;
+		background-color: var(--mainColor);
+		transition: 1s;
+        z-index: 10;
+	}
+
+	header .responsive_nav {
+		transform: translateY(200vh);
+	}
+
+	nav .nav-close-btn {
+		position: absolute;
+		top: 2rem;
+		right: 2rem;
+	}
+
+	nav a {
+		font-size: 1.5rem;
+	}
 }
