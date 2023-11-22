@@ -51,7 +51,6 @@ const TareaForm = () => {
             setUnidad('')
             setError(null)
             setEmptyFields([])
-            console.log('New Tarea Added', json)
             inputRef.current.focus()
             dispatch({type: 'CREATE_TAREA', payload: json})
         }        

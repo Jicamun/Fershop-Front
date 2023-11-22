@@ -34,8 +34,6 @@ userSchema.statics.signup = async function(email, password, pin) {
     if (!validator.isStrongPassword(password)){
         throw Error('Password not strogn enough')
     }
-    console.log(pin)
-    console.log(password)
     if (pin < 999 || pin > 10000){
         throw Error('PIN has to be 4 digits long')
     }
@@ -81,7 +79,6 @@ userSchema.statics.login = async function(email, password) {
 
 // Static Pin Check Method
 userSchema.statics.pinCheck = async function(pin, email) {
-    console.log(pin, email)
     let match = false
     if (!pin){
         throw Error('All fields must be filled')

@@ -19,10 +19,7 @@ function App() {
 
   const enableWorkMode = async (pin) => {
     try {
-      console.log("enableWorkMode");
-      console.log(pin, user.email);
       const isValidPin = await pinCheck(pin, user.email);
-      console.log("isValidPin: " + isValidPin);
       if (isValidPin) {
         setWorkMode(!workMode);
       } else {

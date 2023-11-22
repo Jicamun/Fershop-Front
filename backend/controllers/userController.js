@@ -44,7 +44,6 @@ const pinCheck = async (req, res) => {
     
     try{
         let checked = false
-        console.log(pin, email)
         checked = await User.pinCheck(pin, email)
 
         res.status(200).json({checked})

@@ -157,7 +157,6 @@ const Task = () => {
             setSelectedTarea(null); // Deseleccionar la tarea si ya estaba seleccionada
         } else {
             setSelectedTarea(tarea);
-            console.log(tarea)
         }
     };
 

@@ -16,7 +16,6 @@ const Navbar = ({ workMode, enableWorkMode, onClick }) => {
     const enteredPin = prompt("Ingrese PIN:");
     if (enteredPin) {
         const pinAsNumber = parseInt(enteredPin, 10); // Convert to number
-        console.log("handleEnableWorkMode: " + pinAsNumber)
         enableWorkMode(pinAsNumber);
     }
   };

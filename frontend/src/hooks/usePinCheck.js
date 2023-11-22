@@ -10,11 +10,9 @@ export const usePinCheck = () => {
 
   const pinCheck = async (pin, email) => {
     try {
-        console.log("I'm in pinCheck")
         setIsLoading(true);
         setError(null);
 
-        console.log(pin, email);
 
         const response = await fetch(`${baseUrl}/api/user/pincheck`, {
             method: "POST",
