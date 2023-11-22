@@ -41,11 +41,12 @@ const Navbar = ({ workMode, enableWorkMode, onClick }) => {
       <Link to="/"> <a> <h3>Fershop</h3> </a> </Link>
       <nav ref={navRef}>
         <div className="nav-elements">
-          { workMode ? (  
+          {user && (
+            workMode ? (
               <>
                 <a onClick={showNavbar}> <Link to="/workers">Workers</Link> </a>
                 <a onClick={showNavbar}> <Link to="/tasks">Tasks</Link> </a>
-              </>      
+              </>
             ) : (
               <>
                 <a onClick={showNavbar}> <Link to="/workers">Workers</Link> </a>
@@ -53,62 +54,63 @@ const Navbar = ({ workMode, enableWorkMode, onClick }) => {
                 <a onClick={showNavbar}> <Link to="/monitor">Monitor</Link> </a>
               </>
             )
-          }
+
+          )}
         </div>
-      
+
         <div className="nav-elements">
-        {user && (
-              <div className="user-options">
-                {workMode ? "" : <a><Link to="/settings">{user.email}</Link></a>}
-                {workMode ? (
-                  ""
-                ) : (
-                  <button onClick={handleLogoutClick}>Log out</button>
-                )}
-              </div>
-        )}
+          {user && (
+            <div className="user-options">
+              {workMode ? "" : <a><Link to="/settings">{user.email}</Link></a>}
+              {workMode ? (
+                ""
+              ) : (
+                <button onClick={handleLogoutClick}>Log out</button>
+              )}
+            </div>
+          )}
 
-        {!user && (
-          <div className="authentication">
-            <button> <Link to="/login">Login</Link> </button>
-            <button> <Link to="/signup">Signup</Link> </button>
-          </div>
-        )}
+          {!user && (
+            <div className="authentication">
+              <button> <Link to="/login">Login</Link> </button>
+              <button> <Link to="/signup">Signup</Link> </button>
+            </div>
+          )}
 
-        {user && (
-          <div className="workmode">
-            {workMode ? (
-                <div>                         
-                    <button onClick={handleEnableWorkMode}>
-                        Disable Work Mode
-                    </button>
-                </div> 
-            ) : (
-                <div>                         
-                    <button onClick={handleEnableWorkMode}>
-                        Enable Work Mode
-                    </button>
+          {user && (
+            <div className="workmode">
+              {workMode ? (
+                <div>
+                  <button onClick={handleEnableWorkMode}>
+                    Disable Work Mode
+                  </button>
                 </div>
-            )}
-          </div>
-        )}
+              ) : (
+                <div>
+                  <button onClick={handleEnableWorkMode}>
+                    Enable Work Mode
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
 
 
-        <a
-					className="nav-btn nav-close-btn material-symbols-outlined"
-					onClick={showNavbar}
-          onKeyDown={handleKeyPress}
-        >
-					menu
-				</a>
-        </div>        
+          <a
+            className="nav-btn nav-close-btn material-symbols-outlined"
+            onClick={showNavbar}
+            onKeyDown={handleKeyPress}
+          >
+            menu
+          </a>
+        </div>
       </nav>
       <a
-					className="nav-btn material-symbols-outlined"
-					onClick={showNavbar}
-          onKeyDown={handleKeyPress}
-        >
-					menu
+        className="nav-btn material-symbols-outlined"
+        onClick={showNavbar}
+        onKeyDown={handleKeyPress}
+      >
+        menu
       </a>
     </header>
   );
