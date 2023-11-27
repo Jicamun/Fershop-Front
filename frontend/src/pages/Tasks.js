@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useWorkersContext } from '../hooks/useWorkersContext'
 import { useTareasContext } from '../hooks/useTareasContext'
 import { useAuthContext } from '../hooks/useAuthContext'
+import { useLogout } from "../hooks/useLogout";
 
 // Components
 import {TareaDetailsSmall} from '../components/TareaDetails'
@@ -14,6 +15,7 @@ const Task = () => {
     const {workers, dispatch: workersDispatch} = useWorkersContext()
     const {tareas, dispatch: tareasDispatch} = useTareasContext()
     const {user} = useAuthContext()
+    const { logout } = useLogout();
     const [selectedWorker, setSelectedWorker] = useState(null);
     const [selectedTarea, setSelectedTarea] = useState(null);
 
@@ -39,6 +41,13 @@ const Task = () => {
 
         if (response.ok) {
             workersDispatch({type: 'SET_WORKERS', payload: json})
+        } else {
+            if (response.status === 401) {
+                console.log("Unauthorized. Logging out...")
+                logout();
+            } else {                    
+                console.error(`Error en la petición: ${response.status}`);
+            }
         }
     }
 
@@ -52,6 +61,13 @@ const Task = () => {
 
         if(response.ok){
             tareasDispatch({type:'SET_TAREAS', payload: json})
+        } else {
+            if (response.status === 401) {
+                console.log("Unauthorized. Logging out...")
+                logout();
+            } else {                    
+                console.error(`Error en la petición: ${response.status}`);
+            }
         }
     }
 
@@ -70,6 +86,13 @@ const Task = () => {
 
         if(response.ok){
             tareasDispatch({type:'SET_TAREAS_SMALL', payload: json})
+        } else {
+            if (response.status === 401) {
+                console.log("Unauthorized. Logging out...")
+                logout();
+            } else {                    
+                console.error(`Error en la petición: ${response.status}`);
+            }
         }
     }
 
@@ -214,6 +237,14 @@ const Task = () => {
             },
             body: JSON.stringify(tarea)
         })
+
+        if (response.status === 401) {
+            console.log("Unauthorized. Logging out...")
+            logout();
+            return
+        } else {                    
+            console.error(`Error en la petición: ${response.status}`);
+        }
 
         return response
     }

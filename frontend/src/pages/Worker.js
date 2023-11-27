@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useWorkersContext } from '../hooks/useWorkersContext'
 import { useAuthContext } from '../hooks/useAuthContext'
+import { useLogout } from "../hooks/useLogout";
 
 // Components
 import {WorkerDetails} from '../components/WorkerDetails'
@@ -12,6 +13,7 @@ const Worker = () => {
 
     const {workers, dispatch} = useWorkersContext()
     const {user} = useAuthContext()
+    const { logout } = useLogout();
 
     useEffect(() => {
         const fetchWorkers = async () => {          
@@ -24,6 +26,13 @@ const Worker = () => {
 
             if (response.ok) {
                 dispatch({type: 'SET_WORKERS', payload: json})
+            } else {
+                if (response.status === 401) {
+                    console.log("Unauthorized. Logging out...")
+                    logout();
+                } else {                    
+                    console.error(`Error en la petición: ${response.status}`);
+                }
             }
         }
 

@@ -1,5 +1,6 @@
 import { useAuthContext } from "../hooks/useAuthContext"
 import { useTareasContext } from "../hooks/useTareasContext"
+import { useLogout } from "../hooks/useLogout";
 import PropTypes from 'prop-types'
 
 // Date fns
@@ -10,6 +11,7 @@ const TareaDetails = ({ tarea }) => {
 
     const {dispatch} = useTareasContext()
     const {user} = useAuthContext()
+    const { logout } = useLogout();
 
     const handleClick = async () => {
         if(!user){
@@ -29,6 +31,13 @@ const TareaDetails = ({ tarea }) => {
     
             if (response.ok){
                 dispatch({type: 'DELETE_TAREA', payload: json})
+            } else {
+                if (response.status === 401) {
+                    console.log("Unauthorized. Logging out...")
+                    logout();
+                } else {                    
+                    console.error(`Error en la petición: ${response.status}`);
+                }
             }
         } else {
             return
@@ -138,6 +147,7 @@ const TareaDetailsWithTime = ({ tarea, worker, onClick }) => {
 
     const {dispatch} = useTareasContext()
     const {user} = useAuthContext()
+    const { logout } = useLogout();
     const baseUrl = process.env.REACT_APP_API_URL || '';
 
     const handleClick = async () => {
@@ -158,6 +168,13 @@ const TareaDetailsWithTime = ({ tarea, worker, onClick }) => {
     
             if (response.ok){
                 dispatch({type: 'DELETE_TAREA', payload: json})
+            } else {
+                if (response.status === 401) {
+                    console.log("Unauthorized. Logging out...")
+                    logout();
+                } else {                    
+                    console.error(`Error en la petición: ${response.status}`);
+                }
             }
         } else {
             return

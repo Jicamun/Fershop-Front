@@ -1,11 +1,13 @@
 import { useState, useRef } from "react"
 import { useWorkersContext } from "../hooks/useWorkersContext"
 import { useAuthContext } from "../hooks/useAuthContext"
+import { useLogout } from "../hooks/useLogout";
 const baseUrl = process.env.REACT_APP_API_URL || '';
 
 const WorkerForm = () => {
     const { dispatch } = useWorkersContext()
     const { user } = useAuthContext()
+    const { logout } = useLogout()
 
     const [name, setName] = useState('')
     const [birthdate, setBirthdate] = useState('')
@@ -41,6 +43,13 @@ const WorkerForm = () => {
         if (!response.ok) {
             setError(json.error)
             setEmptyFields(json.emptyFields)
+
+        
+            if (response.status === 401) {
+                console.log("Unauthorized. Logging out...")
+                logout();
+            }
+
         }
         if (response.ok) {
             setName('')

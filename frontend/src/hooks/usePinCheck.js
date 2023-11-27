@@ -1,12 +1,14 @@
 // usePinCheck.js
 import { useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { useLogout } from "../hooks/useLogout";
 
 export const usePinCheck = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const baseUrl = process.env.REACT_APP_API_URL || "";
   const { user } = useAuthContext();
+  const { logout } = useLogout()
 
   const pinCheck = async (pin, email) => {
     try {
@@ -27,6 +29,12 @@ export const usePinCheck = () => {
         if (!response.ok) {
             setIsLoading(false);
             setError(response.error);
+            
+            if (response.status === 401) {
+                console.log("Unauthorized. Logging out...")
+                logout();
+            }            
+
         }
 
         if (response.ok) {            

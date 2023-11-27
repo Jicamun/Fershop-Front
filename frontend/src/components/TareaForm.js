@@ -1,11 +1,14 @@
 import { useState, useRef } from "react"
 import { useTareasContext } from "../hooks/useTareasContext"
 import { useAuthContext } from "../hooks/useAuthContext"
+import { useLogout } from "../hooks/useLogout";
+
 const baseUrl = process.env.REACT_APP_API_URL || '';
 
 const TareaForm = () => {
     const { dispatch } = useTareasContext()
     const { user } = useAuthContext()
+    const { logout } = useLogout()
 
     const [cantidad, setCantidad] = useState('')
     const [calidad, setCalidad] = useState('')
@@ -42,6 +45,12 @@ const TareaForm = () => {
         if (!response.ok) {
             setError(json.error)
             setEmptyFields(json.emptyFields)
+
+            if (response.status === 401) {
+                console.log("Unauthorized. Logging out...")
+                logout();
+            }
+
         }
         if (response.ok) {
             setCantidad('')

@@ -14,7 +14,7 @@ function App() {
   const { user } = useAuthContext();
   const { pinCheck } = usePinCheck();
 
-  const [workMode, setWorkMode] = useState(false);
+  const [workMode, setWorkMode] = useState(true);
   const [enteredPin, setEnteredPin] = useState("");
 
   const enableWorkMode = async (pin) => {

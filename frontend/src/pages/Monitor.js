@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useWorkersContext } from '../hooks/useWorkersContext'
 import { useTareasContext } from '../hooks/useTareasContext'
 import { useAuthContext } from '../hooks/useAuthContext'
+import { useLogout } from "../hooks/useLogout";
 import { DatePicker, Input, Select, Button } from 'antd';
 import 'antd/dist/reset.css'
 
@@ -17,6 +18,7 @@ const Monitor = () => {
     const {workers, dispatch: workersDispatch} = useWorkersContext()
     const {tareas, dispatch: tareasDispatch} = useTareasContext()
     const {user} = useAuthContext()
+    const { logout } = useLogout();
     const { RangePicker } = DatePicker;   
     const { Option } = Select; 
 
@@ -51,6 +53,13 @@ const Monitor = () => {
 
         if (response.ok) {
             workersDispatch({type: 'SET_WORKERS', payload: json})
+        } else {
+            if (response.status === 401) {
+                console.log("Unauthorized. Logging out...")
+                logout();
+            } else {                    
+                console.error(`Error en la petición: ${response.status}`);
+            }
         }
     }
 
@@ -80,6 +89,13 @@ const Monitor = () => {
 
         if(response.ok){
             tareasDispatch({type:'SET_TAREAS', payload: json})
+        } else {
+            if (response.status === 401) {
+                console.log("Unauthorized. Logging out...")
+                logout();
+            } else {                    
+                console.error(`Error en la petición: ${response.status}`);
+            }
         }
     }
 

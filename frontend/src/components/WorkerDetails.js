@@ -1,5 +1,6 @@
 import { useAuthContext } from "../hooks/useAuthContext"
 import { useWorkersContext } from "../hooks/useWorkersContext"
+import { useLogout } from "../hooks/useLogout";
 
 // Date fns
 //import formatDistanceToNow from 'date-fns/formatDistanceToNow'
@@ -10,6 +11,7 @@ const WorkerDetails = ({ worker }) => {
 
     const {dispatch} = useWorkersContext()
     const {user} = useAuthContext()
+    const { logout } = useLogout()
 
     const handleClick = async () => {
         if(!user){
@@ -26,6 +28,13 @@ const WorkerDetails = ({ worker }) => {
 
         if (response.ok){
             dispatch({type: 'DELETE_WORKER', payload: json})
+        } else {
+            if (response.status === 401) {
+                console.log("Unauthorized. Logging out...")
+                logout();
+            } else {                    
+                console.error(`Error en la petición: ${response.status}`);
+            }
         }
 
     }

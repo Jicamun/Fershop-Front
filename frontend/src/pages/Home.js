@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useTareasContext } from '../hooks/useTareasContext'
 import { useAuthContext } from '../hooks/useAuthContext'
+import { useLogout } from "../hooks/useLogout";
 
 // Components
 import {TareaDetails} from '../components/TareaDetails'
@@ -12,9 +13,11 @@ const Home = () => {
 
     const {tareas, dispatch} = useTareasContext()
     const {user} = useAuthContext()
+    const { logout } = useLogout();
 
     useEffect(() => {
-        const fetchTareas = async () => {          
+
+        const fetchTareas = async () => {        
             const response = await fetch( baseUrl + '/api/tareas/all', {
                 headers: {
                     'Authorization' : `Bearer ${user.token}`
@@ -24,14 +27,21 @@ const Home = () => {
 
             if (response.ok) {
                 dispatch({type: 'SET_TAREAS', payload: json})
+            } else {
+                if (response.status === 401) {
+                    console.log("Unauthorized. Logging out...")
+                    logout();
+                } else {                    
+                    console.error(`Error en la petición: ${response.status}`);
+                }
             }
         }
 
-        if (user) {
-            fetchTareas()
-        }
+            if (user) {
+                fetchTareas()
+            }        
         
-    }, [dispatch, user])
+        }, [dispatch, user])
 
     return (
         <div className="home">            
