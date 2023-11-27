@@ -71,8 +71,6 @@ const Monitor = () => {
         .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
         .join('&');
 
-        console.log(filteredParams)
-
         const response = await fetch( baseUrl + `/api/tareas/all?${filteredParams}`, {
             headers: {
                 'Authorization' : `Bearer ${user.token}`

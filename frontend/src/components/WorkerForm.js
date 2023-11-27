@@ -49,7 +49,6 @@ const WorkerForm = () => {
             setType('')
             setError(null)
             setEmptyFields([])
-            console.log('New Worker Added', json)
             inputRef.current.focus()
             dispatch({type: 'CREATE_WORKER', payload: json})
         }

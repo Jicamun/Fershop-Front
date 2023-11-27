@@ -63,9 +63,9 @@ const createWorker = async (req, res) => {
     // Add doc to DB
     try {
         const user_id = req.user._id
-        console.log({name, birthdate, salary, type, user_id})
+
         const worker = await Worker.create({name, birthdate, salary, type, user_id})
-        console.log(worker)
+
         res.status(200).json(worker)
     } catch (error) {
         res.status(400).json({error: error.message})
