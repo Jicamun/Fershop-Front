@@ -1,7 +1,7 @@
 const express = require('express')
 
 // Controller Functions
-const { loginUser, signupUser, pinCheck } = require('../controllers/userController')
+const { loginUser, signupUser, checkOwnPin, changeOwnPassword, changeOwnPin } = require('../controllers/userController')
 const requireAuth = require('../middleware/requireAuth')
 
 
@@ -14,6 +14,12 @@ router.post('/login', loginUser)
 router.post('/signup', signupUser)
 
 // Signup route
-router.post('/pincheck', requireAuth, pinCheck)
+router.post('/checkOwnPin', requireAuth, checkOwnPin)
+
+// Change Password
+router.patch('/changeOwnPassword', requireAuth, changeOwnPassword)
+
+// Change Pin
+router.patch('/changeOwnPin', requireAuth, changeOwnPin)
 
 module.exports = router

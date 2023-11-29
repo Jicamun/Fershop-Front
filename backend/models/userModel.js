@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const validator = require('validator')
+const jwt = require('jsonwebtoken')
 const { response } = require('express')
 
 const Schema = mongoose.Schema
@@ -78,7 +79,7 @@ userSchema.statics.login = async function(email, password) {
 }
 
 // Static Pin Check Method
-userSchema.statics.pinCheck = async function(pin, email) {
+userSchema.statics.pinCheck = async function(email, pin) {
     let match = false
     if (!pin){
         throw Error('All fields must be filled')
@@ -100,6 +101,46 @@ userSchema.statics.pinCheck = async function(pin, email) {
 
 }
 
+userSchema.statics.changePassword = async function(email, password) {
+    
+    if (!password){
+        throw Error('All fields must be filled')
+    }
+    if (!validator.isStrongPassword(password)){
+        throw Error('Password not strogn enough')
+    }
+
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(password, salt)
+
+    const newUser = await this.findOneAndUpdate({ email }, { password: hash }, { new: true })
+
+    return newUser
+}
+
+userSchema.statics.changePin = async function(email, pin) {
+    // Validation 
+    console.log("Aqui, pin: " + pin)
+    if (!pin || !isNumericString(pin)){
+        throw Error('All fields must be filled correctly')
+    }
+    if (pin < 999 || pin > 10000){
+        throw Error('PIN has to be 4 digits long')
+    }
+
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(pin+"", salt)
+
+    const user = await this.findOneAndUpdate({ email }, { pin: hash }, { new: true })
+
+    return user
+}
+
+function isNumericString(str) {
+    // Use a regular expression to check if the string only contains digits
+    return /^\d+$/.test(str);
+}
+  
 
 
 module.exports = mongoose.model('User', userSchema)
